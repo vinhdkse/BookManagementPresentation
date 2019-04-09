@@ -1,0 +1,200 @@
+﻿@model BookManagementPresentation.Model.Book
+
+@{
+    ViewBag.Title = "Edit";
+    var list = (IList<BookManagementPresentation.Model.Category>)ViewData["categoryList"];
+    var book = (BookManagementPresentation.Model.Book)ViewData["book"];
+    var category = (BookManagementPresentation.Model.Category)ViewData["category"];
+    var author = (BookManagementPresentation.Model.Author)ViewData["author"];
+    var authorList = (IList<BookManagementPresentation.Model.Author>)ViewData["authorList"];
+}
+
+
+<div id="page-content">
+    <!-- Validation Header -->
+    <div class="content-header">
+        <ul class="nav-horizontal text-center">
+            <li>
+                <a href="/Admin/Books"><i class="gi gi-book"></i>Quản lí Sách</a>
+            </li>
+            <li>
+                <a href="/Admin/Categories"><i class="gi gi-shop_window"></i>Quản lí hiệu sách</a>
+            </li>
+            <li>
+                <a href="/Admin/Payments"><i class="gi gi-money"></i>Quản lí thanh toán</a>
+            </li>
+            <li>
+                <a href="/Admin/QuanLyDonHang"><i class="gi gi-shopping_cart"></i>Quản lí đơn hàng</a>
+            </li>
+            <li>
+                <a href="/Admin/Authors"><i class="gi gi-user"></i>Quản lí tác giả</a>
+            </li>
+            <li>
+                <a href="/Admin/Messages"><i class="gi gi-message_ban"></i>Tin nhắn</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row text-center">
+        <div class="col-sm-6 col-lg-3">
+            <a href="/Admin/Books/Index" class="widget widget-hover-effect2">
+                <div class="widget-extra themed-background-success">
+                    <h4 class="widget-content-light"><strong>Quay về trang sách</strong></h4>
+                </div>
+                <div class="widget-extra-full"><span class="h2 text-success animation-expandOpen"><i class="gi gi-unshare"></i></span></div>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <a href="/Home/Index" class="widget widget-hover-effect2">
+                <div class="widget-extra themed-background-dark">
+                    <h4 class="widget-content-light"><strong>Đi đến cửa hàng</strong></h4>
+                </div>
+                <div class="widget-extra-full"><span class="h2 themed-color-dark animation-expandOpen">Go</span></div>
+            </a>
+        </div>
+    </div>
+    <!-- END Validation Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Form Validation Example Block -->
+            <div class="block">
+                <!-- Form Validation Example Title -->
+                <div class="block-title">
+                    <h2><strong>Book</strong> Create</h2>
+                </div>
+                <!-- END Form Validation Example Title -->
+                <!-- Form Validation Example Content -->
+                <form id="form-validation" action="/Admin/Books/Edit" method="post" class="form-horizontal form-bordered" enctype="multipart/form-data">
+                    <div class="col-md-4">
+                        <fieldset>
+                            <input type="hidden" name="ID" value="@book.ID" />
+                            <label class="col-md-12 control-label" for="val_img">Book Image <span class="text-danger">*</span></label><br />
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input type="file" name="Img" id="val_img" class="form-control" accept="image/*" s />
+                                        <span class="input-group-addon"><i class="fi fi-jpg"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="checkChange" value="NO" name="checkChange" />
+                            <input type="hidden" id="checkChange" value="@book.Image" name="noChange" />
+                            <img class="col-md-12" id="img" width="300" height="300" src="~/@book.Image" />
+
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4">
+                        <fieldset>
+                            <label class="col-md-12 control-label" for="val_name">Book Name <span class="text-danger">*</span></label><br />
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input type="text" id="val_name" name="Name" class="form-control" placeholder="Book Name.." value="@book.Name">
+                                        <span class="input-group-addon"><i class="gi gi-text_resize"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-md-12 control-label" for="val_author">Book Author <span class="text-danger">*</span></label><br />
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <select id="example-select" name="AuthorId" class="form-control" size="1">
+                                            @foreach (var au in authorList)
+                                            {
+                                                if (author.ID.Equals(au.ID))
+                                                {
+                                                    <option value="@au.ID" selected="selected">@au.Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@au.ID">@au.Name</option>
+                                                }
+                                            }
+                                        </select>
+                                        <span class="input-group-addon"><i class="hi hi-fullscreen"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-md-12 control-label" for="val_publisher">Book Publisher <span class="text-danger">*</span></label><br />
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input type="text" id="val_location" name="Publisher" class="form-control" placeholder="Book Publisher.." value="@book.Publisher">
+                                        <span class="input-group-addon"><i class="hi hi-cloud"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-md-12 control-label" for="val_date">Publish Date <span class="text-danger">*</span></label><br />
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input type="date" id="val_date" name="PublishDate" class="form-control datepicker" data-date-format="mm/dd/yyyy" placeholder="mm/dd/yyyy" value="@book.PublishDate.GetDateTimeFormats()[5]">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-md-12 control-label" for="val_price">Book Price <span class="text-danger">*</span></label><br />
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input type="text" id="val_size" name="Price" class="form-control" placeholder="Book Price.." value="@book.Price">
+                                        <span class="input-group-addon"><i class="hi hi-fullscreen"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-md-12 control-label" for="val_quantity">Book Quantity <span class="text-danger">*</span></label><br />
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input type="text" id="val_size" name="Quantity" class="form-control" placeholder="Book Quantity.." value="@book.Quantity">
+                                        <span class="input-group-addon"><i class="hi hi-fullscreen"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-md-12 control-label" for="val_size">Book Category <span class="text-danger">*</span></label><br />
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <select id="example-select" name="CategoryID" class="form-control" size="1">
+                                            @foreach (var cate in list)
+                                            {
+                                                if (@category.ID.Equals(@cate.ID))
+                                                {
+                                                    <option value="@cate.ID" selected="selected">@cate.Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@cate.ID">@cate.Name</option>
+                                                }
+                                            }
+                                        </select>
+                                        <span class="input-group-addon"><i class="hi hi-fullscreen"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4">
+                        <fieldset>
+                            <label class="col-md-12 control-label" for="val_description">Description <span class="text-danger">*</span></label><br />
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <textarea id="" name="Description" rows="29" class="form-control" placeholder="Tell us your story of event..">@book.Description</textarea>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div class="form-group form-actions">
+                        <div class="col-md-10 col-md-offset-5">
+                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-arrow-right"></i>Update Book</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- END Form Validation Example Content -->
+                <!-- Terms Modal -->
+            </div>
+            <!-- END Validation Block -->
+        </div>
+    </div>
+</div>

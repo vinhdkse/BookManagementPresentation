@@ -1,0 +1,164 @@
+﻿@model BookManagementPresentation.Model.MyUser
+@{
+    ViewBag.Title = "Hồ sơ cá nhân";
+}
+<section class="site-section site-section-light site-section-top themed-background-dark">
+    <div class="container">
+        <h1 class="text-center animation-slideDown"><i class="fa fa-plus"></i> <strong>Hồ sơ</strong></h1>
+        <h2 class="h3 text-center animation-slideUp">Cập nhật thông tin của bạn</h2>
+    </div>
+</section>
+<section class="site-content site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Form Validation Example Block -->
+                <div class="block">
+                    <!-- END Form Validation Example Title -->
+                    <!-- Form Validation Example Content -->
+                    <form id="form-sign-up" action="/Account/Information" method="post" class="form-horizontal" enctype="multipart/form-data">
+                        <div class="col-md-6">
+                            <fieldset>
+                                <input type="hidden" name="ID" value="@Model.Id" />
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            @if (Model.Image == null || Model.Image == "")
+                                            {
+                                                <label for="val_img">
+                                                    <img class="img-circle" id="img" width="300" height="300" src="~/img/placeholders/avatars/avatar10.jpg" />
+                                                </label>
+                                            }
+                                            else
+                                            {
+                                                <label for="val_img">
+                                                    <img class="img-circle" id="img" width="300" height="300" src="~/@Model.Image" />
+                                                </label>
+                                            }
+                                            <input type="file" name="Img" id="val_img" class="form-control" accept="image/*" style="display:none;" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="checkChange" value="NO" name="checkChange" />
+                                <input type="hidden" id="checkChange" value="@Model.Image" name="noChange" />
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset>
+                                <label class="col-md-12 control-label" for="Name">Tên của bạn <span class="text-danger">*</span></label><br />
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input type="text" id="Name" name="Name" class="form-control" placeholder="Tên của bạn.." value="@Model.Name" />
+                                            <span class="input-group-addon"><i class="gi gi-text_resize"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="col-md-12 control-label" for="val_publisher">Email của bạn <span class="text-danger">*</span></label><br />
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input type="text" id="val_location" name="Email" class="form-control" placeholder="Email của bạn.." value="@Model.Email" readonly="">
+                                            <span class="input-group-addon"><i class="hi hi-cloud"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                    <label class="col-md-12 control-label" for="val_date">Ngày Sinh <span class="text-danger">*</span></label><br />
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="input-group">
+                                                @if (Model.DateOfBirth != null)
+                                                {
+                                                    <input type="date" id="val_date" name="DateOfBirth" class="form-control datepicker" data-date-format="mm/dd/yyyy" placeholder="mm/dd/yyyy" value="@DateTime.Parse(Model.DateOfBirth.ToString()).GetDateTimeFormats()[5]">
+
+                                                }
+                                                else {
+                                                    <input type="date" id="val_date" name="DateOfBirth" class="form-control datepicker" data-date-format="mm/dd/yyyy" placeholder="mm/dd/yyyy" >
+                                                }
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                        </div>
+                                    </div>
+                                
+                                <label class="col-md-12 control-label" for="val_price">Giới tính <span class="text-danger">*</span></label><br />
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <select id="example-select" name="Gender" class="form-control" size="1">
+                                                @if (Model.Gender != null)
+                                                {
+                                                    <option value="0">Please select</option>
+                                                    if (Model.Gender == "Nam")
+                                                    {
+                                                        <option value="Nam" selected="selected">Nam</option>
+                                                        <option value="Nữ">Nữ</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="Nam">Nam</option>
+                                                        <option value="Nữ" selected="selected">Nữ</option>
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    <option value="0">Please select</option>
+                                                    <option value="Nam" selected="selected">Nam</option>
+                                                    <option value="Nữ">Nữ</option>
+                                                }
+                                            </select>
+                                            <span class="input-group-addon"><i class="hi hi-fullscreen"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="form-group form-actions">
+                            <div class="col-md-10 col-md-offset-5">
+                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-arrow-right"></i>Cập nhật hồ sơ</button>
+                                <a class="btn btn-sm btn-primary" href="/Account/ChangePassword?Id=@Model.Id&Email=@Model.Email">Đổi mật khẩu</a>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- END Form Validation Example Content -->
+                    <!-- Terms Modal -->
+                </div>
+                <!-- END Validation Block -->
+            </div>
+        </div>
+    </div>
+</section>
+<section class="site-content site-section themed-background">
+    <div class="container">
+        <!-- Stats Row -->
+        <!-- CountTo (initialized in js/app.js), for more examples you can check out https://github.com/mhuggins/jquery-countTo -->
+        <div class="row" id="counters">
+            <div class="col-sm-6 col-md-3">
+                <div class="counter site-block">
+                    <span data-toggle="countTo" data-to="6800" data-after="+"></span>
+                    <small>Quyển sách</small>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="counter site-block">
+                    <span data-toggle="countTo" data-to="5500" data-after="+"></span>
+                    <small>Khác hàng thân thiện</small>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="counter site-block">
+                    <span data-toggle="countTo" data-to="12362"></span>
+                    <small>Lượt mua</small>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="counter site-block">
+                    <span data-toggle="countTo" data-to="2150"></span>
+                    <small>Ngày tuyệt vời</small>
+                </div>
+            </div>
+        </div>
+        <!-- END Stats Row -->
+    </div>
+</section>

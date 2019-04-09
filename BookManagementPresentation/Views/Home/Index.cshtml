@@ -1,0 +1,252 @@
+﻿@using BookManagementPresentation.Model
+@model IEnumerable<Book>
+@{
+    ViewBag.Title = "Trang chủ";
+}
+
+
+@if (Model.Count() >= 5)
+{
+    <div id="home-carousel" class="carousel carousel-home slide" data-ride="carousel" data-interval="5000">
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            @for (int i = 0; i < 5; i++)
+            {
+                if (i == 0)
+                {
+                    <div class="active item">
+                        <section class="site-section site-section-light site-section-top themed-background-dark-default">
+                            <div class="container">
+                                <h1 class="text-center animation-slideDown hidden-xs"><strong>Sách HOT Trong Tuần</strong></h1>
+                                <h2 class="text-center animation-slideUp push hidden-xs">Đừng bỏ lỡ cơ hội sở hữu những cuốn sách đang làm mưa làm gió hiện nay!</h2>
+                                <p class="text-center animation-fadeIn">
+                                    <a href="@Url.Action("XemChiTietSach","Home",new {BookID=Model.ElementAt(i).ID})">
+                                        <img src="@Url.Content("~/" + Model.ElementAt(i).Image)" alt="Promo Image 1" style="width:400px; height:450px;">
+                                    </a>
+                                </p>
+                            </div>
+                        </section>
+                    </div>
+                }
+                else
+                {
+                    <div class="item">
+                        <section class="site-section site-section-light site-section-top themed-background-dark-default">
+                            <div class="container">
+                                <h1 class="text-center animation-slideDown hidden-xs"><strong>Sách HOT Trong Tuần</strong></h1>
+                                <h2 class="text-center animation-slideUp push hidden-xs">Đừng bỏ lỡ cơ hội sở hữu những cuốn sách đang làm mưa làm gió hiện nay!</h2>
+                                <p class="text-center animation-fadeIn">
+                                    <img src="@Url.Content("~/"+Model.ElementAt(i).Image)" alt="Promo Image 1" style="width:400px; height:450px;">
+                                </p>
+                            </div>
+                        </section>
+                    </div>
+                }
+
+            }
+        </div>
+        <!-- END Wrapper for slides -->
+        <!-- Controls -->
+        <a class="left carousel-control" href="#home-carousel" data-slide="prev">
+            <span>
+                <i class="fa fa-chevron-left"></i>
+            </span>
+        </a>
+        <a class="right carousel-control" href="#home-carousel" data-slide="next">
+            <span>
+                <i class="fa fa-chevron-right"></i>
+            </span>
+        </a>
+        <!-- END Controls -->
+    </div>
+    <!-- END Home Carousel -->
+    <!-- Action -->
+    <section class="site-content site-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-lg-3">
+                    <a href="#" class="btn btn-lg btn-success"><i class="fa fa-shopping-cart"></i> Sách Bán Chạy Trong Tuần</a>
+                </div>
+                <div class="col-md-4 col-lg-3 pull-right">
+                    <div class="col-xs-12">
+                        <form action="/Home/FindBookByLikeName">
+                            <div class="input-group">
+
+                                <input type="text" id="searchInput" name="bookName" class="form-control" placeholder="Tìm kiếm..." />
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary" id="submitSearch"><i class="fa fa-search"></i></button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </section>
+    <!-- Promo #1 -->
+    for (int i = 0; i < 5; i++)
+    {
+        if (i % 2 == 0)
+        {
+            <section class="site-content site-section site-slide-content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 site-block visibility-none" data-toggle="animation-appear" data-animation-class="animation-fadeInRight" data-element-offset="-180">
+                            <img src="@Url.Content("~/"+Model.ElementAt(i).Image)" alt="Promo #1" class="img-responsive" style="width:400px; height:450px;">
+                        </div>
+                        <div class="col-sm-6 col-md-5 col-md-offset-1 site-block visibility-none" data-toggle="animation-appear" data-animation-class="animation-fadeInLeft" data-element-offset="-180">
+                            <h3 class="h2 site-heading site-heading-promo"><strong>@Model.ElementAt(i).Name</strong></h3>
+                            <p class="promo-content">@Model.ElementAt(i).Description.Substring(0, 200).ToString() [...] <a href="/Home/XemChiTietSach?BookID=@Model.ElementAt(i).ID">Xem chi tiết...</a></p>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </section>
+            <!-- END Promo #1 -->
+        }
+        else
+        {
+            <!-- Promo #2 -->
+            <section class="site-content site-section site-slide-content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-5 site-block visibility-none" data-toggle="animation-appear" data-animation-class="animation-fadeInRight" data-element-offset="-180">
+                            <h3 class="h2 site-heading site-heading-promo"><strong>@Model.ElementAt(i).Name</strong></h3>
+                            <p class="promo-content">@Model.ElementAt(i).Description.Substring(0, 200) [...] <a href="/Home/XemChiTietSach?BookID=@Model.ElementAt(i).ID">Xem chi tiết...</a></p>
+                        </div>
+                        <div class="col-sm-6 col-md-offset-1 site-block visibility-none" data-toggle="animation-appear" data-animation-class="animation-fadeInLeft" data-element-offset="-180">
+                            <img src="@Url.Content("~/"+Model.ElementAt(i).Image)" alt="Promo #2" class="img-responsive" style="width:400px; height:450px;">
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </section>
+            <!-- END Promo #2 -->
+        }
+    }
+
+
+}
+else
+{
+
+    <div id="home-carousel" class="carousel carousel-home slide" data-ride="carousel" data-interval="5000">
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <section class="site-section site-section-light site-section-top themed-background-default">
+                    <div class="container">
+                        <h1 class="text-center animation-slideDown hidden-xs"><strong>Những quyển sách độc đáo nhất</strong></h1>
+                        <h2 class="text-center animation-slideUp push hidden-xs">Mang đến cho bạn những trải nghiệm mới lạ</h2>
+                        <p class="text-center animation-fadeIn">
+                            <img src="~/img/chotoixin.jpg" alt="Promo Image 1" style="width:300px; height:300px;" />
+                        </p>
+                    </div>
+                </section>
+            </div>
+            <div class="item">
+                <section class="site-section site-section-light site-section-top themed-background-fire">
+                    <div class="container">
+                        <h1 class="text-center animation-fadeIn360 hidden-xs"><strong>Những quyển sách độc đáo nhất</strong></h1>
+                        <h2 class="text-center animation-fadeIn360 push hidden-xs">Mang đến cho bạn những trải nghiệm mới lạ</h2>
+                        <p class="text-center animation-fadeInLeft">
+                            <img src="~/img/camon.jpg" alt="Promo Image 1" style="width:300px; height:300px;" />
+                        </p>
+                    </div>
+                </section>
+            </div>
+            <div class="item">
+                <section class="site-section site-section-light site-section-top themed-background-amethyst">
+                    <div class="container">
+                        <h1 class="text-center animation-hatch hidden-xs"><strong>Những quyển sách độc đáo nhất</strong></h1>
+                        <h2 class="text-center animation-hatch push hidden-xs">Mang đến cho bạn những trải nghiệm mới lạ</h2>
+                        <p class="text-center animation-hatch">
+                            <img src="~/img/coduyen.jpg" alt="Promo Image 1" style="width:300px; height:300px;" />
+                        </p>
+                    </div>
+                </section>
+            </div>
+            <div class="item">
+                <section class="site-section site-section-light site-section-top themed-background-modern">
+                    <div class="container">
+                        <h1 class="text-center animation-fadeInLeft hidden-xs"><strong>Những quyển sách độc đáo nhất</strong></h1>
+                        <h2 class="text-center animation-fadeInRight push hidden-xs">Mang đến cho bạn những trải nghiệm mới lạ</h2>
+                        <p class="text-center animation-fadeIn360">
+                            <img src="~/img/KYHieuVaLienKiHieu.jpg" alt="Promo Image 1" style="width:300px; height:300px;" />
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- END Wrapper for slides -->
+        <!-- Controls -->
+        <a class="left carousel-control" href="#home-carousel" data-slide="prev">
+            <span>
+                <i class="fa fa-chevron-left"></i>
+            </span>
+        </a>
+        <a class="right carousel-control" href="#home-carousel" data-slide="next">
+            <span>
+                <i class="fa fa-chevron-right"></i>
+            </span>
+        </a>
+        <!-- END Controls -->
+    </div>
+    <section class="site-content site-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-lg-3 pull-right">
+                    <div class="col-xs-12">
+                        <form action="/Home/FindBookByLikeName">
+                            <div class="input-group">
+
+                                <input type="text" id="searchInput" name="bookName" class="form-control" placeholder="Tìm kiếm..." />
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary" id="submitSearch"><i class="fa fa-search"></i></button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </section>
+}
+
+
+
+
+
+<script>
+    $("#searchInput").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '@Url.Action("GetSearchList", "Home")',
+                dataType: "json",
+                data: { search: $("#searchInput").val() },
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return { label: item.Name, value: item.Name };
+                    }));
+                },
+                error: function (xhr, status, error) {
+                    alert("Error");
+                }
+            });
+        }
+    });
+</script>
+<script>
+    $("#submitSearch").click(function () {
+        var searchValue = $("#searchInput").val();
+        if (searchValue.length == 0) {
+            $("#submitSearch").prop('type', 'button');
+        } else {
+            $("#submitSearch").prop('type', 'submit');
+        }
+    });
+</script>

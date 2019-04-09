@@ -1,0 +1,308 @@
+﻿@using BookManagementPresentation.Model
+@{
+    ViewBag.Title = "Xác nhận đặt hàng";
+    var listPay = (IList<Payment>)ViewBag.ThanhToan;
+    var listPro = (IList<Province>)ViewBag.Tinh;
+    var giohang = (IList<BookManagementPresentation.Models.ItemGioHang>)ViewBag.GioHang;
+
+}
+<section class="site-section site-section-light site-section-top themed-background-dark">
+    <div class="container text-center">
+        <h1 class="animation-slideDown"><strong>Xác nhận đơn hàng và thanh toán</strong></h1>
+    </div>
+</section>
+<section class="site-content site-section">
+    <div class="container">
+        <div class="site-block">
+            <form id="checkout-wizard" action="/GioHang/DatHang" method="post">
+                <!-- First Step -->
+                <!-- END Second Step -->
+                <!-- Third Step -->
+                <div id="checkout-third" class="step">
+                    <!-- Step Info -->
+                    <ul class="nav nav-pills nav-justified checkout-steps push-bit">
+                        <li class="active"><a href="javascript:void(0)"><strong>3. PAYMENT</strong></a></li>
+                        <li><a href="javascript:void(0)"><strong>4. CONFIRM ORDER</strong></a></li>
+                    </ul>
+                    <!-- END Step Info -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h4 class="page-header"><i class="fa fa-credit-card"></i> Thông tin giao hàng</h4>
+                            <div class="form-group">
+                                <div class="input-group col-md-12">
+                                    <input type="text" id="checkout-payment-name" name="" value="@Session["FullName"]" class="form-control" placeholder="Full Name" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group col-md-12">
+                                    <input type="text" id="" name="Phone" class="form-control" placeholder="Ví dụ:0902818547">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+
+                                <div class="col-xs-4">
+                                    <select class="form-control" name="Province" id="tinh" onchange="load()">
+                                        <option disabled selected>Khu vực</option>
+                                        @foreach (var item in listPro)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-xs-4" id="divThanhpho">
+                                    <select class="form-control" name="City" id="checkcity" onchange="check()">
+                                        <option disabled selected>Tỉnh/Thành Phố</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4" id="divHuyen">
+                                    <select class="form-control" name="District" id="checkhuyen" onchange="tinhtien()">
+                                        <option disabled selected>Huyện</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group col-md-12">
+                                    <input type="text" id="" name="Address" class="form-control" placeholder="Địa chỉ của bạn">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Chọn</label>
+                                <div class="input-group col-md-12">
+                                    <select class="form-control" name="Payment" onchange="get()" id="tada">
+                                        <option disabled selected>Chọn Phương Thức Thanh Toán</option>
+                                        @if (listPay == null)
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            foreach (var item in listPay)
+                                            {
+                                                <option value="@item.ID">@item.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" id="checkcart">
+                                <div class='col-xs-4' id="card" style="display:none;">
+                                    <label>Số thẻ</label>
+                                    <input type='text' name='Card' id="masked-card" class='form-control' placeholder='0000-0000-0000-0000'>
+                                </div>
+                                <div class='col-xs-4' id="cvc" style="display:none;">
+                                    <label>CVC</label>
+                                    <input type='text' id="cvccart" name='CVC' class='form-control' placeholder='000'>
+                                </div>
+                                <div class='col-xs-2' id="date" style="display:none;">
+                                    <label>Month</label>
+                                    <input type='text' id="month" name='Month' class='form-control' placeholder='MM'>
+                                </div>
+                                <div class='col-xs-2' id="date1" style="display:none;">
+                                    <label>Year</label>
+                                    <input type='text' id="year" name='Year' class='form-control' placeholder='YY'>
+                                </div>
+                                @*<div class='form-group row'>
+                                    <div class='col-xs-6'>
+                                        <label>Tháng</label><select class='form-control' name='Month'>
+                                            <option disabled selected>MM</option>
+                                            <option value='01'>01</option>
+                                            <option value='02'>02</option>
+                                            <option value='03'>03</option>
+                                            <option value='04'>04</option>
+                                            <option value='05'>05</option>
+                                            <option value='06'>06</option>
+                                            <option value='07'>07</option>
+                                            <option value='08'>08</option>
+                                            <option value='09'>09</option>
+                                            <option value='10'>10</option>
+                                            <option value='11'>11</option>
+                                            <option value='12'>12</option>
+                                        </select>
+                                    </div>
+
+                                    <div class='col-xs-6'>
+                                        <label>Năm</label><select class='form-control' name='Year'>
+                                            <option disabled selected>YY</option>
+                                            <option value='01'>20</option>
+                                            <option value='02'>21</option>
+                                            <option value='03'>22</option>
+                                            <option value='04'>23</option>
+                                            <option value='05'>24</option>
+                                            <option value='06'>25</option>
+                                            <option value='07'>26</option>
+                                            <option value='08'>27</option>
+                                            <option value='09'>28</option>
+                                            <option value='10'>29</option>
+                                            <option value='11'>30</option>
+                                        </select>
+                                    </div>
+                                </div>*@
+
+                                <div class='col-xs-6' id="seri" style="display:none;">
+                                    <label>Số serial</label> <input type='text' name='Serial' class='form-control' id="masked-cardnum" placeholder='000000000000'>
+                                </div>
+                                <div class='col-xs-6' id="cardnum" style="display:none;">
+                                    <label>Mã thẻ</label><input type='text' name='CardNumber' class='form-control' id="masked-serial" placeholder='99999999999'>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Third Step -->
+                <!-- Fourth Step -->
+                <div id="checkout-fourth" class="step">
+                    <!-- Step Info -->
+                    <ul class="nav nav-pills nav-justified checkout-steps push-bit">
+
+                        <li><a href="javascript:void(0)"><i class="fa fa-check"></i> <strong>3. PAYMENT</strong></a></li>
+                        <li class="active"><a href="javascript:void(0)"><strong>4. CONFIRM ORDER</strong></a></li>
+                    </ul>
+                    <!-- END Step Info -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-vcenter">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">Tên sách</th>
+                                    <th class="text-center">Số lượng</th>
+                                    <th class="text-right">Đơn Giá</th>
+                                    <th class="text-right">Tổng</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rs"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END Fourth Step -->
+                <!-- Form Buttons -->
+                <div class="form-group pull-left col-xs-4">
+                    <a href="/Home/Test" class="btn btn-block btn-primary">Tiếp tục mua hàng</a>
+                </div>
+                <div class="form-group text-right">
+                    <input type="reset" class="btn btn-danger" id="back" value="">
+                    <input type="submit" class="btn btn-primary" id="next" value="">
+                </div>
+                <!-- END Form Buttons -->
+            </form>
+            <!-- END Checkout Wizard Content -->
+        </div>
+    </div>
+</section>
+<section class="site-content site-section site-section-light themed-background-coral">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-sm-5 push visibility-none" data-toggle="animation-appear" data-animation-class="animation-fadeInQuick" data-element-offset="-100">
+                <span class="h3"><i class="fa fa-truck"></i> <strong>FREE SHIPPING</strong><br>24h DELIVERY</span>
+            </div>
+            <div class="col-sm-2 push visibility-none" data-toggle="animation-appear" data-animation-class="animation-fadeInQuickInv" data-element-offset="-100">
+                <i class="fa fa-plus fa-4x"></i>
+            </div>
+            <div class="col-sm-5 push visibility-none" data-toggle="animation-appear" data-animation-class="animation-fadeInQuick" data-element-offset="-100">
+                <span class="h3"><i class="fa fa-support"></i> <strong>FREE SUPPORT</strong><br>24/7</span>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    //document.getElementById('tinh').addEventListener("change", function () {
+    //    $.ajax({
+    //        url: "/GioHang/LoadThanhPho", data: { id: $('#tinh').val }, type: 'get', success: function (result) {
+    //            $("#thanhpho").replaceWith(result);
+    //        }
+    //    });
+    //});
+    function check() {
+        var id = document.getElementById('checkcity').value;
+        $.ajax({
+            type: 'POST',
+            url: '/GioHang/LoadHuyen',
+            dataType: 'json',
+            data: {
+                'id': id
+            },
+            success: function (data) {
+                // the next thing you want to do
+                var $city = $('#checkhuyen');
+                $city.empty();
+                $city.append('<option disabled selected>Huyện</option>');
+                for (var i = 0; i < data.length; i++) {
+                    $city.append('<option value=' + data[i].Id + '>' + data[i].Name + '</option>');
+                }
+            }
+        });
+
+    }
+    function load() {
+
+        //document.getElementById('hidden').value = document.getElementById('tinh').value;
+        //document.getElementById('check').value = "Yes";
+        //document.getElementById('tinhmoi').submit();
+        var id = document.getElementById('tinh').value;
+        $.ajax({
+            type: 'POST',
+            url: '/GioHang/LoadThanhPho',
+            dataType: 'json',
+            data: {
+                'id': id
+            },
+            success: function (data) {
+                // the next thing you want to do
+                var $city = $('#checkcity');
+                $city.empty();
+                $city.append('<option disabled selected>Thành Phố</option>');
+                for (var i = 0; i < data.length; i++) {
+                    $city.append('<option value=' + data[i].Id + '>' + data[i].Name + '</option>');
+                }
+            }
+        });
+    }
+    function tinhtien() {
+
+        //document.getElementById('hidden').value = document.getElementById('tinh').value;
+        //document.getElementById('check').value = "Yes";
+        //document.getElementById('tinhmoi').submit();
+        var id = document.getElementById('checkhuyen').value;
+        $.ajax({
+            type: 'POST',
+            url: '/GioHang/GetBill',
+            dataType: 'json',
+            data: {
+                'id': id
+            },
+            success: function (data) {
+                // the next thing you want to do
+                var $huyen = $('#rs');
+                $huyen.empty();
+                $huyen.append(data);
+            }
+        });
+    }
+    function get() {
+        var value = document.getElementById('tada').value;
+        if (value === "2" || value === "5") {
+            document.getElementById('card').style.display = "block";
+            document.getElementById('cvc').style.display = "block";
+            document.getElementById('date').style.display = "block";
+            document.getElementById('date1').style.display = "block";
+            document.getElementById('cardnum').style.display = "none";
+            document.getElementById('seri').style.display = "none";
+        } else if (value === "6") {
+            document.getElementById('card').style.display = "none";
+            document.getElementById('cvc').style.display = "none";
+            document.getElementById('date').style.display = "none";
+            document.getElementById('date1').style.display = "none";
+            document.getElementById('cardnum').style.display = "block";
+            document.getElementById('seri').style.display = "block";
+        } else {
+            document.getElementById('card').style.display = "none";
+            document.getElementById('cvc').style.display = "none";
+            document.getElementById('date').style.display = "none";
+            document.getElementById('date1').style.display = "none";
+            document.getElementById('cardnum').style.display = "none";
+            document.getElementById('seri').style.display = "none";
+        }
+    }
+    
+</script>

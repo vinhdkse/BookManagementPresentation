@@ -1,0 +1,88 @@
+﻿@model IEnumerable<BookManagementPresentation.Model.Author>
+
+@{
+    ViewBag.Title = "Trang Tác Giả";
+}
+
+<div id="page-content">
+    <!-- Datatables Header -->
+    <div class="content-header">
+        <ul class="nav-horizontal text-center">
+            <li>
+                <a href="/Admin/Books"><i class="gi gi-book"></i>Quản lí Sách</a>
+            </li>
+            <li>
+                <a href="/Admin/Categories"><i class="gi gi-shop_window"></i>Quản lí hiệu sách</a>
+            </li>
+            <li>
+                <a href="/Admin/Payments"><i class="gi gi-money"></i>Quản lí thanh toán</a>
+            </li>
+            <li>
+                <a href="/Admin/QuanLyDonHang"><i class="gi gi-shopping_cart"></i>Quản lí đơn hàng</a>
+            </li>
+            <li>
+                <a href="/Admin/Authors"><i class="gi gi-user"></i>Quản lí tác giả</a>
+            </li>
+            <li>
+                <a href="/Admin/Messages"><i class="gi gi-message_ban"></i>Tin nhắn</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row text-center">
+        <div class="col-sm-6 col-lg-3">
+            <a href="/Admin/Authors/Create" class="widget widget-hover-effect2">
+                <div class="widget-extra themed-background-success">
+                    <h4 class="widget-content-light"><strong>Thêm mới tác giả</strong></h4>
+                </div>
+                <div class="widget-extra-full"><span class="h2 text-success animation-expandOpen"><i class="fa fa-plus"></i></span></div>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <a href="/Home/Index" class="widget widget-hover-effect2">
+                <div class="widget-extra themed-background-dark">
+                    <h4 class="widget-content-light"><strong>Đi đến cửa hàng</strong></h4>
+                </div>
+                <div class="widget-extra-full"><span class="h2 themed-color-dark animation-expandOpen">Go</span></div>
+            </a>
+        </div>
+    </div>
+    <div class="block full">
+        <div class="block-title">
+            <h2><strong>Liệt kê toàn bộ tác giả của shop</strong></h2>
+        </div>
+        <div class="table-responsive">
+            <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">Số thứ tự</th>
+                        <th class="text-center">Tên Tác Giả</th>
+                        <th class="text-center">Chức Năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int count = 1;}
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@count</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <a href="/Admin/Authors/Edit/@item.ID" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>
+                                    <form action="/Admin/Authors/Delete" method="post">
+                                        <button type="submit" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>
+                                        <input type="hidden" name="id" value="@item.ID" />
+                                    </form>
+                                    @*<a href="Delete/@item.BookID" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>*@
+                                </div>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- END Datatables Content -->
+
+</div>

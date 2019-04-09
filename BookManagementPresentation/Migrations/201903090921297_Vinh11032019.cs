@@ -1,0 +1,18 @@
+namespace BookManagementPresentation.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class Vinh11032019 : DbMigration
+    {
+        public override void Up()
+        {
+            AddColumn("dbo.Carts", "BookName", c => c.String());
+        }
+        
+        public override void Down()
+        {
+            DropColumn("dbo.Carts", "BookName");
+        }
+    }
+}

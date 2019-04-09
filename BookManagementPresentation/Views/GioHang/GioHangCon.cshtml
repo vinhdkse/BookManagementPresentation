@@ -1,0 +1,135 @@
+﻿@using BookManagementPresentation.Models
+@model List<ItemGioHang>
+    @{ 
+        int count = 1;
+    }
+<section class="site-content site-section">
+    <div class="container" id="gio">
+        @if (Model.Count == 0)
+        {
+            <div>
+                <h1 style="color:red">Chưa có sản phẩm trong giỏ hàng ^^</h1>
+            </div>
+            <div class="col-xs-7 col-md-3">
+                <a href="/Home/Test" class="btn btn-block btn-primary">Tiếp tục mua hàng</a>
+                @*@Html.ActionLink("Tiếp tục mua hàng","Index","UserHome",new {@class= "btn btn-block btn-primary"})*@
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-vcenter">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Sách</th>
+                            <th class="text-center">Số Lượng</th>
+                            <th class="text-right">Đơn Giá</th>
+                            <th class="text-right">Thành Tiền</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="result">
+
+                        @foreach (var item in Model)
+                        {
+                            <tr id="row @count">
+                                <td style="width: 200px;">
+                                    <img src="@Url.Content("~/" + item.Image)" alt="" style="width: 180px;">
+                                </td>
+                                <td>
+                                    <strong>@item.BookName</strong><br>
+                                    <br>
+                                    <strong class="text-success">In stock</strong> - 24h Delivery
+                                </td>
+                                <td class="text-center">
+                                    <a href="javascript:void(0)" class="btn btn-xs btn-danger" data-toggle="tooltip" title="Remove" id="@count" onclick="sub(this)"><i class="fa fa-minus"></i></a>
+                                    <strong>@item.Quantity</strong>
+                                    <input type="hidden" value="@item.Quantity" id="quan @count" name="@item.BookID" />
+                                    <a href="javascript:void(0)" class="btn btn-xs btn-success" data-toggle="tooltip" title="Add" id="@count" onclick="add(this)"><i class="fa fa-plus"></i></a>
+                                </td>
+                                <td class="text-right">@item.Price.ToString("#,##") VNĐ</td>
+                                <td class="text-right"><strong>@item.TotalPrice.ToString("#,##") VNĐ</strong></td>
+                                <td>
+                                    @Html.ActionLink("Sửa", "EditGioHang", new { @_BookID = item.BookID }, new { @class = "btn btn-xs btn-success" })
+                                    @Html.ActionLink("Xóa", "XoaItemGioHang", new { @_BookID = item.BookID }, new { @class = "btn btn-xs btn-danger" })
+                                    @*<a href='/GioHang/EditGioHang?_BookID=' class='btn btn-xs btn-success' data-toggle='tooltip' title="Sửa">Sửa</a>
+                                    <a href='/GioHang/XoaItemGioHang?_BookID=' class='btn btn-xs btn-danger' data-toggle="'tooltip' title="Xóa">Xóa</a>*@
+                                </td>
+                            </tr>
+                            count = count + 1;
+                        }
+
+                        <tr class="active">
+                            <td colspan="4" class="text-right text-uppercase h4"><strong>Tổng tiền</strong></td>
+                            <td class="text-right text-success h4"><strong>@ViewBag.TongTien.ToString("#,##") VNĐ</strong></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-xs-7 col-md-3">
+                    <a href="/Home/Test" class="btn btn-block btn-primary">Tiếp tục mua hàng</a>
+                    @*@Html.ActionLink("Tiếp tục mua hàng","Index","UserHome",new {@class= "btn btn-block btn-primary"})*@
+                </div>
+                @using (Html.BeginForm("XacNhanDatHang", "GioHang"))
+                {
+                    <div class="col-xs-5 col-md-3 col-md-offset-6">
+                        @*<a href=ecom_checkout.html class="btn btn-block btn-danger">Đặt Hàng</a>*@
+                        <input type="submit" value="Đặt hàng" class="btn btn-block btn-danger" id="btnDatHang" />
+                    </div>
+                }
+            </div>
+
+        }
+
+    </div>
+</section>
+<script>
+    function add(model) {
+        var count = model.id;
+        var name = document.getElementById('quan ' + count).name;
+        var value = document.getElementById('quan ' + count).value;
+        $.ajax({
+            type: 'POST',
+            url: '/GioHang/ChangeQuantity',
+            dataType: 'json',
+            data: {
+                'id': name,
+                'quantity': value,
+                'model':"add"
+            },
+            success: function (data) {
+                if (data == value) {
+
+                } else {
+                    var $result = $('#gio');
+                    $result.empty();
+                    $result.append(data);
+                }
+                // the next thing you want to do
+            }
+        });
+    }
+    function sub(model) {
+        var count = model.id;
+        var name = document.getElementById('quan ' + count).name;
+        var value = document.getElementById('quan ' + count).value;
+        $.ajax({
+            type: 'POST',
+            url: '/GioHang/ChangeQuantity',
+            dataType: 'json',
+            data: {
+                'id': name,
+                'quantity': value,
+                'model': "sub"
+            },
+            success: function (data) {
+                // the next thing you want to do
+                var $result = $('#gio');
+                $result.empty();
+                $result.append(data);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,16 @@
+﻿@using BookManagementPresentation.Model
+@model IEnumerable<District>
+    <select class="form-control" name="District" id="checkhuyen">
+        <option disabled selected>Huyện</option>
+        @if (Model == null)
+        {
+
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <option>@item.Name</option>
+            }
+        }
+    </select>

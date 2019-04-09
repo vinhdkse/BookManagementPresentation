@@ -1,0 +1,40 @@
+﻿@using BookManagementPresentation.Model
+@using PagedList.Mvc;
+@*Class giúp hiển thị sản phẩm tương ứng với số trang*@
+@model PagedList.IPagedList<Book>
+@{
+    ViewBag.Title = "Hiện Hết Sách";
+}
+
+<section class="site-section site-section-light site-section-top themed-background-dark">
+    <div class="container text-center">
+        <h1 class="animation-slideDown"><strong>Hơn 5000 Quyển Sách!</strong></h1>
+    </div>
+</section>
+<!-- END Intro -->
+<!-- Product List -->
+<section class="site-content site-section">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-4 col-lg-3">
+                <aside class="sidebar site-block">
+                    <!-- Store Menu -->
+                    <!-- Store Menu functionality is initialized in js/app.js -->
+                    @Html.Action("LoadDanhMucSach", "Home")
+                    <!-- Shopping Cart -->
+                    @Html.Action("GioHangPartial", "GioHang")
+                    <!-- END Shopping Cart -->
+                </aside>
+            </div>
+            <!-- END Sidebar -->
+            <!-- Products -->
+            <div class="col-md-8 col-lg-9" id="divBest">
+
+                @Html.Action("_TestPartialView", "Home")
+            </div>
+
+            <!-- END Products -->
+        </div>
+    </div>
+</section>

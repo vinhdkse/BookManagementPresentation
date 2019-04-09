@@ -1,0 +1,149 @@
+﻿@using BookManagementPresentation.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    var message = ViewBag.Invalid;
+}
+@*
+
+    <h2>@ViewBag.Title.</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <section id="loginForm">
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h4>Use a local account to log in.</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Log in" class="btn btn-default" />
+                        </div>
+                    </div>
+                    <p>
+                        @Html.ActionLink("Register as a new user", "Register")
+                    </p>
+                    // Enable this once you have account confirmation enabled for password reset functionality
+                        <p>
+                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                        </p>
+                }
+            </section>
+        </div>
+        <div class="col-md-4">
+            <section id="socialLoginForm">
+                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+            </section>
+        </div>
+    </div>*@
+<section class="site-section site-section-light site-section-top themed-background-dark">
+    <div class="container">
+        <h1 class="text-center animation-slideDown"><i class="fa fa-arrow-right"></i> <strong>Đăng nhập</strong></h1>
+        <h2 class="h3 text-center animation-slideUp">Mua sách thật tiện lợi!</h2>
+    </div>
+</section>
+<section class="site-content site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-2 site-block">
+                <!-- Log In Form -->
+                <form action="/Account/Login" method="post" id="form-log-in" class="form-horizontal">
+                    <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
+                    <div class="form-group">
+                        <span class="text-danger text-center">@message</span>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="gi gi-envelope"></i></span>
+                                <input type="email" id="login-email" name="Email" class="form-control input-lg" placeholder="Email">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="gi gi-asterisk"></i></span>
+                                <input type="password" id="login-password" name="Password" class="form-control input-lg" placeholder="Mật khẩu">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-actions">
+                        <div class="col-xs-6">
+                            <label class="switch switch-primary">
+                                <input type="checkbox" id="login-remember-me" name="RememberMe" checked><span></span>
+                            </label>
+                            <small>Ghi nhớ tôi</small>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-arrow-right"></i> Đăng nhập</button>
+                        </div>
+                    </div>
+
+                </form>
+                <div class="text-center">
+                    <a href="/Account/ForgotPassword"><small>Quên mật khẩu?</small></a>
+                    <a href="/Account/Register"><small>Tạo tài khoản mới</small></a>
+                </div>
+                <!-- END Log In Form -->
+            </div>
+            <div class="col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-2 site-block">
+                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+            </div>
+        </div>
+        <hr>
+    </div>
+</section>
+<section class="site-content site-section">
+    <div class="container">
+        <div class="row row-items text-center">
+            <div class="col-sm-3 animation-fadeIn">
+                <a href="javascript:void(0)" class="circle themed-background">
+                    <i class="gi gi-life_preserver"></i>
+                </a>
+                <h4>Open a <strong>ticket</strong></h4>
+            </div>
+            <div class="col-sm-3 animation-fadeIn">
+                <a href="javascript:void(0)" class="circle themed-background">
+                    <i class="gi gi-envelope"></i>
+                </a>
+                <h4><strong>Email</strong> Us</h4>
+            </div>
+            <div class="col-sm-3 animation-fadeIn">
+                <a href="javascript:void(0)" class="circle themed-background">
+                    <i class="fa fa-comments"></i>
+                </a>
+                <h4><strong>Chat</strong> Live</h4>
+            </div>
+            <div class="col-sm-3 animation-fadeIn">
+                <a href="javascript:void(0)" class="circle themed-background">
+                    <i class="fa fa-twitter"></i>
+                </a>
+                <h4><strong>Tweet</strong> Us</h4>
+            </div>
+        </div>
+    </div>
+</section>

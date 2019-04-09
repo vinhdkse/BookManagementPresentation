@@ -1,0 +1,115 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    var list = (IList<BookManagementPresentation.Model.Comment>)ViewData["ListComment"];
+    var ID = ViewData["ID"];
+    var k = 1;
+    var size = list.Count;
+}
+<ul class="media-list push" id="chathub">
+    @foreach (var item in list)
+    {
+        <li class="media">
+            @if (item.MyUser.Image == null)
+            {
+                <a href="javascript:void(0)" class="pull-left">
+                    <img src="~/img/placeholders/avatars/avatar9.jpg" alt="Avatar" width="50px" height="50px" class="img-circle">
+                </a>
+            }
+            else
+            {
+                <a href="javascript:void(0)" class="pull-left">
+                    <img src="~/@item.MyUser.Image" width="50px" height="50px" alt="Avatar" class="img-circle">
+                </a>
+            }
+            <div class="media-body">
+                <div class="text-warning pull-right">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <a href="javascript:void(0)"><strong>@item.MyUser.Name </strong></a> @item.Content<br>
+                <span class="text-muted"><small><em>@item.ContentDate</em></small></span><br />
+                <a href="javascript:void(0)" class="btn btn-xs btn-default col-xs-2" id="@k" onclick="clickLike(this)"><i class="fa fa-thumbs-o-up"></i> Like</a>
+                <a href="javascript:void(0)" class="btn btn-xs btn-success col-xs-2" id="U @k" style="display:none;" onclick="clickUnLike(this)"><i class="fa fa-thumbs-o-down"></i> Unlike</a>
+            </div>
+        </li>
+        k = k + 1;
+    }
+
+</ul>
+@if (User.Identity.IsAuthenticated)
+{
+    if (Session["Image"] == null)
+    {
+        <a href="javascript:void(0)" class="pull-left">
+            <img src="~/img/placeholders/avatars/avatar9.jpg" alt="Avatar" class="img-circle" width="50px" height="50px" id="img">
+        </a>
+    }
+    else
+    {
+        <a href="javascript:void(0)" class="pull-left">
+            <img src="~/@Session["Image"]" alt="Avatar" class="img-circle" width="50px" height="50px" id="img">
+        </a>
+    }
+
+        <div class="media-body">
+            <a href="javascript:void(0)"><strong>@Session["FullName"]</strong></a><br>
+            @*@using (Ajax.BeginForm("CommentAction", "Home", new AjaxOptions
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "product-reviews"
+        }))
+        {
+
+        }*@
+            <input type="hidden" name="FullName" value="@Session["FullName"]" id="FullName" />
+            <input type="hidden" name="userId" value="@User.Identity.GetUserId()" id="userId" />
+            <input type="text" name="Content" class="form-control" placeholder="Ý kiến của bạn" id="contentMessage" />
+            <input type="submit" class="btn btn-danger" id="btn-send" />
+
+        </div>
+}
+
+<script>
+    function clickLike(elem) {
+        document.getElementById(elem.id).style.display = "none";
+        document.getElementById('U ' + elem.id).style.display = "block";
+    }
+    function clickUnLike(elem) {
+        var x = elem.id;
+        document.getElementById(x).style.display = "none";
+        document.getElementById(x.substring(2, x.length)).style.display = "block";
+    }
+    $(function () {
+        var chat = $.connection.chatHub;
+        chat.client.addNewMessageToPage = function (message, date, img,name,bookId) {
+            @(k = k + 1)
+            if (htmlEncode(bookId) == '@ID') {
+                $('#chathub').append('<li class="media"><a href="javascript:void(0)" class="pull-left">' +
+                '<img src = "' + img + '" alt = "Avatar" width = "50px" height = "50px" class= "img-circle">' +
+                '</a><div class="media-body"><div class="text-warning pull-right"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i></div>' +
+                '<a href="javascript:void(0)"><strong>' + htmlEncode(name)+'</strong></a> ' + htmlEncode(message) + '<br>' +
+                '<span class="text-muted"><small><em>' + htmlEncode(date) + '</em></small></span><br />' +
+                '<a href="javascript:void(0)" class="btn btn-xs btn-default col-xs-2" id="@k" onclick="clickLike(this)"><i class="fa fa-thumbs-o-up"></i> Like</a>' +
+                '<a href="javascript:void(0)" class="btn btn-xs btn-success col-xs-2" id="U @k" style="display:none;" onclick="clickUnLike(this)"><i class="fa fa-thumbs-o-down"></i> Unlike</a></li>');
+            }
+        };
+        $.connection.hub.start().done(function () {
+            $('#btn-send').click(function () {
+                var fullname = document.getElementById('FullName').value;
+                var content = document.getElementById('contentMessage').value;
+                var userId = document.getElementById('userId').value;
+                chat.server.send(fullname, userId ,'@ID', content,'/@Session["Image"]');
+                $('#contentMessage').val('').focus();
+            });
+        });
+    });
+    function htmlEncode(value) {
+        var encodedValue = $('<div />').text(value).html();
+        return encodedValue;
+    }
+</script>
+

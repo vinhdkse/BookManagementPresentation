@@ -1,0 +1,91 @@
+﻿@using BookManagementPresentation.Model
+@model IList<Cart>
+@{
+    ViewBag.Title = "Lịch Sử";
+    var dt = (DonDatHang)ViewBag.All;
+}
+<section class="site-section site-section-light site-section-top themed-background-dark">
+    <div class="container text-center">
+        <h1 class="animation-slideDown"><i class="fa fa-shopping-cart"></i> <strong>Chi tiết đơn hàng</strong></h1>
+    </div>
+</section>
+<section class="site-content site-section">
+    <div class="container">
+        <h3 class="text-success pull-left">Mã đơn hàng: @dt.DDH_ID</h3>
+        <h3 class="text-success pull-right">Ngày đặt hàng: @dt.OrderDate</h3>
+    </div>
+
+</section>
+<section class="site-content site-section">
+    <div class="container" id="gio">
+        <div class="table-responsive">
+            <table class="table table-bordered table-vcenter">
+                <thead>
+                    <tr>
+                        <th colspan="2">Sách</th>
+                        <th class="text-center">Số Lượng</th>
+                        <th class="text-right">Đơn Giá</th>
+                        <th class="text-right">Thành Tiền</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="result">
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="width: 200px;">
+                                <img src="@Url.Content("~/" + item.Book.Image)" alt="" style="width: 180px;">
+                            </td>
+                            <td>
+                                <strong>@item.BookName</strong><br>
+                                <br>
+                                <strong class="text-success">In stock</strong> - 24h Delivery
+                            </td>
+                            <td class="text-center">
+                                <strong>@item.Quantity</strong>
+                            </td>
+                            <td class="text-right">@item.Price.ToString("#,##") VNĐ</td>
+                            <td class="text-right"><strong>@((item.Price * item.Quantity).ToString("#,##")) VNĐ</strong></td>
+                        </tr>
+                    }
+
+                    <tr class="active">
+                        <td colspan="4" class="text-right text-uppercase h4"><strong>Tổng tiền</strong></td>
+                        <td class="text-right text-success h4"><strong>@(float.Parse(dt.Total.ToString()).ToString("#,##")) VNĐ</strong></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            @using (Html.BeginForm("HuyDatHang", "GioHang"))
+            {
+                <div class="col-xs-6 col-md-3 col-md-offset-9">
+                    @if (dt.isCanceled == true)
+                    {
+                        <input type="hidden" name="id" value="@dt.DDH_ID" />
+                        <input type="hidden" name="check" value="false" />
+                        <input type="submit" value="Đặt Lại" class="btn btn-block btn-danger" id="btnDatHang" />
+                    }
+                    else if (dt.isDelivered == true)
+                    {
+                        <input type="submit" value="Đã và đang trong thời gian Vận Chuyển" class="btn btn-block btn-danger" id="btnDatHang" disabled />
+                    }
+                    else if (dt.isPaid == true)
+                    {
+                        <input type="submit" value="Bạn đã thanh toán, không thể hủy" class="btn btn-block btn-danger" id="btnDatHang" disabled />
+                    }
+                    else
+                    {
+                        <input type="hidden" name="id" value="@dt.DDH_ID" />
+                        <input type="hidden" name="check" value="true" />
+                        <input type="submit" value="Hủy Đặt" class="btn btn-block btn-danger" id="btnDatHang" />
+                    }
+                </div>
+            }
+        </div>
+
+
+    </div>
+</section>

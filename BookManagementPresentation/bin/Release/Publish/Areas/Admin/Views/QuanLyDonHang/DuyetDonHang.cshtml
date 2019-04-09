@@ -1,0 +1,159 @@
+﻿@using BookManagementPresentation.Model
+@model DonDatHang
+@{
+    ViewBag.Title = "DuyetDonHang";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div id="page-content">
+    <!-- Datatables Header -->
+    <div class="content-header">
+        <ul class="nav-horizontal text-center">
+            <li>
+                <a href="/Admin/Books"><i class="gi gi-book"></i>Quản lí Sách</a>
+            </li>
+            <li>
+                <a href="/Admin/Categories"><i class="gi gi-shop_window"></i>Quản lí hiệu sách</a>
+            </li>
+            <li>
+                <a href="/Admin/Payments"><i class="gi gi-money"></i>Quản lí thanh toán</a>
+            </li>
+            <li>
+                <a href="/Admin/QuanLyDonHang"><i class="gi gi-shopping_cart"></i>Quản lí đơn hàng</a>
+            </li>
+            <li>
+                <a href="/Admin/Authors"><i class="gi gi-user"></i>Quản lí tác giả</a>
+            </li>
+            <li>
+                <a href="/Admin/Messages"><i class="gi gi-user"></i>Tin nhắn</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row text-center">
+        @*<div class="col-sm-6 col-lg-3">
+            <a href="/Admin/Books/Create" class="widget widget-hover-effect2">
+                <div class="widget-extra themed-background-success">
+                    <h4 class="widget-content-light"><strong>Thêm mới sách</strong></h4>
+                </div>
+                <div class="widget-extra-full"><span class="h2 text-success animation-expandOpen"><i class="fa fa-plus"></i></span></div>
+            </a>
+        </div>*@
+        <div class="col-sm-6 col-lg-3">
+            <a href="/Home/Index" class="widget widget-hover-effect2">
+                <div class="widget-extra themed-background-dark">
+                    <h4 class="widget-content-light"><strong>Đi đến cửa hàng</strong></h4>
+                </div>
+                <div class="widget-extra-full"><span class="h2 themed-color-dark animation-expandOpen">Go</span></div>
+            </a>
+        </div>
+    </div>
+    <div class="block full">
+        <div class="block-title">
+            <h2><strong>Chi tiết đơn đặt hàng của mã đơn hàng: <b style="color:red;"> @Model.DDH_ID  </b></strong></h2>
+        </div>
+        @using (Html.BeginForm("DuyetDonHang", "QuanLyDonHang", "Post"))
+        {
+        <div class="table-responsive">
+            <table id="table" class="table table-vcenter table-condensed table-bordered">
+                @*Phần thông tin đơn hàng*@
+                <thead>
+                    <tr>
+                        <td colspan="5">
+                            <table style="width:100%;">
+                                <tr>
+
+                                    <td>Mã khách hàng: <b style="color:red;"> @Model.MyUser.Id @Html.Hidden("DDH_ID", @Model.DDH_ID)</b></td>
+                                    <td>Tên khách hàng: <b style="color:red;"> @Model.MyUser.Name</b></td>
+                                    <td>Ngày đặt: @Model.OrderDate.Value.ToString("dd/MM/yyyy")</td>
+                                    @if (Model.DeliverDate != null)
+                                    {
+                                        <td>Ngày giao: @Html.EditorFor(model => model.DeliverDate)</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Ngày giao:<input type="date" id="DeliverDate" name="DeliverDate" value="@DateTime.Now.GetDateTimeFormats()[5]" /></td>
+                                    }
+                                    <td>Đã thanh toán: @Html.EditorFor(model => model.isPaid)</td>
+                                    <td>Đã giao: @Html.EditorFor(model => model.isDelivered)</td>
+                                </tr>
+                            </table>
+
+                        </td>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th class="text-center">Số thứ tự</th>
+                        <th class="text-center">Sản Phẩm</th>
+                        <th class="text-center">Hình Ảnh</th>
+                        <th class="text-center">Số Lượng Đặt</th>
+                        <th class="text-center">Đơn Giá</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int count = 1;
+
+                        IEnumerable<Cart> lstChiTietDH = (IEnumerable<Cart>)ViewBag.ListChiTietDonHang;
+                    }
+                    @foreach (var item in lstChiTietDH)
+                    {
+                        <tr>
+                            <td class="text-center">@count</td>
+                            <td class="text-center">@item.BookName</td>
+                            <td class="text-center"><img src="@Url.Content("~/" + item.Book.Image)" width="100" height="150" alt="avatar" class="img-rounded" /></td>
+                            <td class="text-center">@item.Quantity</td>
+                            <td class="text-center">@item.Price</td>
+
+                        </tr>
+                        count++;
+                    }
+
+                    <tr>
+                        <td align="right" colspan="5">Tổng số lượng: @Model.Carts.Sum(n => n.Quantity) cuốn sách</td>
+                    </tr>
+                    <tr>
+                        <td align="right" colspan="5">Tổng tiền: @double.Parse(Model.Total.ToString()).ToString("#,##") nghìn đồng</td>
+                    </tr>
+                </tbody>
+            </table><br>
+            <input type="hidden" name="CusUsername" value="@Model.MyUser.Id" />
+            <button type="submit" class="btn btn-sm btn-primary validDate"><i class="fa fa-angle-right"></i> Lưu đơn hàng</button>
+            <button type="submit" class="btn btn-sm btn-warning validDate" id="btnInDonHang"><i class="fa fa-angle-right"></i> In đơn hàng</button>
+        </div>
+                            }
+    </div>
+    <!-- END Datatables Content -->
+
+
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+
+    $("#btnInDonHang").click(function () {
+        var content = "<table>"+ $("#table").html() +"</table>";
+        InDonHang(content);
+    });
+
+    //Phương thức in
+    function InDonHang(content)
+    {
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title>Thông tin đơn hàng</title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(content);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+</script>
+<script>
+    $(".validDate").click(function () {
+        var deliverDate = $("#validDate").val();
+        if (deliverDate.toString() <= Date.now().toString) {
+            $("#isValidDate").text("Ngày giao hàng phải bắt đầu từ hôm nay!");
+            return false;
+        }
+    });
+</script>

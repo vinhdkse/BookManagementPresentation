@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="BookModel-Web.config Connection String" description="BookModel Connection String used in web.config by the application to access the database." defaultValue="data source=DESKTOP-00NRK11;initial catalog=BookManagermentPresentation;user id=sa;password=123;MultipleActiveResultSets=True;App=EntityFramework" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\vinhd\\Desktop\\C\#_Learning\\BookManagementPresentation\\BookManagementPresentation\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='BookModel']/@connectionString" />
+  </parameter>
+  <parameter name="BookManagement-Web.config Connection String" description="BookManagement Connection String used in web.config by the application to access the database." defaultValue="Server=tcp:bookmanagement.database.windows.net,1433;Initial Catalog=BookManagementPresentation;Persist Security Info=False;User ID=vinhdkse62975;Password=ZAQ!2wsx;MultipleActiveResultSets=True;App=EntityFramework" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\vinhd\\Desktop\\C\#_Learning\\BookManagementPresentation\\BookManagementPresentation\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='BookManagement']/@connectionString" />
+  </parameter>
+  <parameter name="BookManagement_DatabasePublish-Web.config Connection String" description="BookManagement_DatabasePublish Connection String used in web.config by the application to access the database." defaultValue="BookManagement_DatabasePublish.ConnetionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\vinhd\\Desktop\\C\#_Learning\\BookManagementPresentation\\BookManagementPresentation\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='BookManagement_DatabasePublish']/@connectionString" />
+  </parameter>
+</parameters>

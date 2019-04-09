@@ -1,0 +1,116 @@
+﻿@using BookManagementPresentation.Model
+@model IList<DonDatHang>
+@{
+    ViewBag.Title = "Lịch Sử";
+}
+
+<section class="site-section site-section-light site-section-top themed-background-dark">
+    <div class="container text-center">
+        <h1 class="animation-slideDown"><i class="fa fa-shopping-cart"></i> <strong>Lịch Sử Mua Hàng</strong></h1>
+    </div>
+</section>
+@if (Model != null && Model.Count > 0)
+{
+    <section class="site-content site-section">
+        <div class="container">
+            <h3 class="text-success pull-left">Bạn là <strong>@ViewBag.Vip</strong></h3>
+            <h3 class="text-success pull-right">Bạn đã ủng hộ <strong>@ViewBag.Total.ToString("#,##") VNĐ</strong></h3>
+        </div>
+
+    </section>
+    <section class="site-content site-section">
+        <div class="container" id="gio">
+            @if (Model.Count == 0)
+            {
+                <div>
+                    <h1 style="color:red" class="text-center col-md-12">Bạn không có đơn hàng nào, Hãy ủng hộ chúng tôi bằng cách click vào bên dưới ^^</h1>
+                </div>
+                <div class="col-md-12">
+                    <a href="/Home/Test" class="btn btn-block btn-primary">Tiếp tục mua hàng</a>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-vcenter" id="example-datatable">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Đơn hàng số</th>
+                                <th class="text-center">Ngày Mua</th>
+                                <th class="text-right">Tình Trạng</th>
+                                <th class="text-right">Tổng tiền</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="result">
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@item.DDH_ID</strong>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>@item.OrderDate</strong>
+                                    </td>
+                                    @if (item.isDelivered == true)
+                                    {
+                                        <td class="text-right">Đã Giao</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-right">Chưa Giao</td>
+                                    }
+                                    <td class="text-right"><strong>@float.Parse(item.Total.ToString()).ToString("#,##") VNĐ</strong></td>
+                                    <td><a href="/GioHang/LichSu?id=@item.DDH_ID">Chi tiết</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </section>
+}
+else
+{
+    <section class="site-content site-section col-md-12">
+        <div>
+            <h1 style="color:red" class="text-center col-md-12">Bạn không có đơn hàng nào, Hãy ủng hộ chúng tôi bằng cách click vào bên dưới ^^</h1>
+        </div>
+        <div class="col-xs-12">
+            <a href="/Home/Test" class="btn btn-block btn-primary">Tiếp tục mua hàng</a>
+        </div>
+    </section>
+}
+<section class="site-content site-section">
+    <div class="container">
+        <div class="row row-items text-center">
+            <div class="col-sm-3 animation-fadeIn">
+                <a href="javascript:void(0)" class="circle themed-background">
+                    <i class="gi gi-life_preserver"></i>
+                </a>
+                <h4>Open a <strong>ticket</strong></h4>
+            </div>
+            <div class="col-sm-3 animation-fadeIn">
+                <a href="javascript:void(0)" class="circle themed-background">
+                    <i class="gi gi-envelope"></i>
+                </a>
+                <h4><strong>Email</strong> Us</h4>
+            </div>
+            <div class="col-sm-3 animation-fadeIn">
+                <a href="javascript:void(0)" class="circle themed-background">
+                    <i class="fa fa-comments"></i>
+                </a>
+                <h4><strong>Chat</strong> Live</h4>
+            </div>
+            <div class="col-sm-3 animation-fadeIn">
+                <a href="javascript:void(0)" class="circle themed-background">
+                    <i class="fa fa-twitter"></i>
+                </a>
+                <h4><strong>Tweet</strong> Us</h4>
+            </div>
+        </div>
+        <hr>
+    </div>
+</section>

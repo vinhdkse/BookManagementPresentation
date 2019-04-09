@@ -1,0 +1,215 @@
+﻿@model IEnumerable<BookManagementPresentation.Model.DonDatHang>
+@{
+    ViewBag.Title = "Quản Lí Đơn Hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    //WebGrid grid = new WebGrid(source: Model, rowsPerPage: 10);
+}
+<link href="~/FEUser/css/bootstrap.min.css" rel="stylesheet" />
+<div id="page-content">
+    <!-- Datatables Header -->
+    <div class="content-header">
+        <ul class="nav-horizontal text-center">
+            <li>
+                <a href="/Admin/Books"><i class="gi gi-book"></i>Quản lí Sách</a>
+            </li>
+            <li>
+                <a href="/Admin/Categories"><i class="gi gi-shop_window"></i>Quản lí hiệu sách</a>
+            </li>
+            <li>
+                <a href="/Admin/Payments"><i class="gi gi-money"></i>Quản lí thanh toán</a>
+            </li>
+            <li>
+                <a href="/Admin/QuanLyDonHang"><i class="gi gi-shopping_cart"></i>Quản lí đơn hàng</a>
+            </li>
+            <li>
+                <a href="/Admin/Authors"><i class="gi gi-user"></i>Quản lí tác giả</a>
+            </li>
+            <li>
+                <a href="/Admin/Messages"><i class="gi gi-message_ban"></i>Tin nhắn</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row text-center">
+        @*<div class="col-sm-6 col-lg-3">
+            <a href="/Admin/Books/Create" class="widget widget-hover-effect2">
+                <div class="widget-extra themed-background-success">
+                    <h4 class="widget-content-light"><strong>Thêm mới sách</strong></h4>
+                </div>
+                <div class="widget-extra-full"><span class="h2 text-success animation-expandOpen"><i class="fa fa-plus"></i></span></div>
+            </a>
+        </div>*@
+        <div class="col-sm-6 col-lg-3">
+            <a href="/Home/Index" class="widget widget-hover-effect2">
+                <div class="widget-extra themed-background-dark">
+                    <h4 class="widget-content-light"><strong>Đi đến cửa hàng</strong></h4>
+                </div>
+                <div class="widget-extra-full"><span class="h2 themed-color-dark animation-expandOpen">Go</span></div>
+            </a>
+        </div>
+    </div>
+    @*tabs*@
+
+    <div class="block full">
+        <div class="block-title">
+            <h2><strong>Quản lý đơn hàng</strong></h2>
+        </div>
+
+        <ul class="nav nav-tabs">
+            <li class="li1 active">
+                <a href="@Url.Action("Index","QuanLyDonHang")">CHƯA THANH TOÁN </a>
+            </li>
+            <li class="li1">
+                <a href="@Url.Action("DaThanhToan_ChuaGiaoHang","QuanLyDonHang")">ĐÃ THANH TOÁN & CHƯA GIAO </a>
+            </li>
+            <li class="li1">
+                <a href="@Url.Action("DaThanhToan_DaGiaoHang","QuanLyDonHang")">ĐÃ GIAO HÀNG </a>
+            </li>
+
+        </ul><br><br />
+        <div class="table-responsive">
+            @*@grid.GetHtml(
+                    tableStyle: "divTable",
+                    headerStyle: "gridHead",
+                    footerStyle: "gridFooter",
+                    rowStyle: "gridRow",
+                    alternatingRowStyle: "gridAltRow",
+                    columns: grid.Columns(
+                        grid.Column("DDH_ID", header: "Mã đơn hàng"),
+                        grid.Column("CusUsername", header: "Khách hàng", format: p => p.CusUsername != null ? p.MyUser.Name : ""),
+                        grid.Column("OrderDate", header: "Ngày đặt"),
+                        grid.Column("isDelivered", header: "Tình trạng giao hàng"),
+                        grid.Column("DeliverDate", header: "Ngày giao"),
+                        grid.Column("isPaid", header: "Đã thanh toán"),
+                        grid.Column("isCanceled", header: "Đã hủy"),
+                        grid.Column(format: p=>@Html.ActionLink("Duyệt đơn hàng","DuyetDonHang", new {id=p.DDH_ID}, new {@target="_blank" ,@class="btn btn-success",@style="color:white;"}))
+                        )
+                )*@
+
+            <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">Mã Đơn Hàng</th>
+                        <th class="text-center">Tên Khách Hàng</th>
+                        <th class="text-center">Ngày Mua Hàng</th>
+                        <th class="text-center">Tình Trạng Giao</th>
+                        <th class="text-center">Ngày Giao Hàng</th>
+                        <th class="text-center">Đã thanh toán</th>
+                        <th class="text-center">Đã hủy</th>
+                        <th class="text-center">Duyệt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td class="text-center">@item.DDH_ID</td>
+                        <td class="text-center">@item.MyUser.Name</td>
+                        <td class="text-center">@item.OrderDate</td>
+                        @if (item.isDelivered == true)
+                        {
+                            <td class="text-center">Đã Giao</td>
+                        }
+                        else
+                        {
+                            <td class="text-center">Chưa Giao</td>
+                        }
+                        <td class="text-center">@item.DeliverDate</td>
+                        @if (item.isPaid == true)
+                        {
+                            <td class="text-center">Đã Thanh Toán</td>
+                        }
+                        else
+                        {
+                            <td class="text-center">Chưa Thanh Toán</td>
+                        }
+                        @if (item.isCanceled == true)
+                        {
+                            <td class="text-center">Đã Hủy</td>
+                        }
+                        else
+                        {
+                            <td class="text-center">Chưa Hủy</td>
+                        }
+                        @if (item.isCanceled == true)
+                        {
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    @*@Html.ActionLink("Duyệt đơn hàng", "DuyetDonHang", new { id = item.DDH_ID }, new { @target = "_blank", @class = "btn btn-success", @style = "color:white;" ,@readonly="true"})*@
+                                    <a class="btn btn-success" style ="color:white;"readonly>Không thể duyệt</a>
+                                </div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    @Html.ActionLink("Duyệt đơn hàng", "DuyetDonHang", new { id = item.DDH_ID }, new { @target = "_blank", @class = "btn btn-success", @style = "color:white;" })
+                                </div>
+                            </td>
+                        }
+
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </div>
+
+    <!-- END Datatables Content -->
+
+
+</div>
+
+@*Css cho controller*@
+<style>
+    .nav-tabs {
+        width: 100%;
+    }
+
+    .li1 {
+        background: #152F55;
+        width: 33.333333333333333%;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+
+
+
+    .divTable {
+        width: 100%;
+        border: 1px solid #999999;
+    }
+
+        .divTable td {
+            border: 1px solid #999999;
+        }
+
+    .gridHead {
+        background-color: Green;
+    }
+
+        .gridHead > th > a {
+            color: #fff;
+        }
+
+    .gridFooter {
+        font-weight: bold;
+    }
+
+    .divTable a {
+        color: blue;
+    }
+
+    .gridRow {
+        background-color: #E2F7F3;
+    }
+
+    .gridAltRow {
+        background-color: #FCFCFC;
+    }
+</style> 

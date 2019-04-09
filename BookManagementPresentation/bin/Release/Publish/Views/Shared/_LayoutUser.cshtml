@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<!--[if IE 9]>         <html class="no-js lt-ie10" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - BookMangerment</title>
+    <meta charset="utf-8">
+
+    <meta name="description" content="ProUI Frontend is a Responsive Bootstrap Site Template created by pixelcave and added as a bonus in ProUI Admin Template package which is published on Themeforest.">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+
+    <!-- Icons -->
+    <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+    <link rel="shortcut icon" href="~/FEUser/img/favicon.png">
+    <link rel="apple-touch-icon" href="~/FEUser/img/icon57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="~/FEUser/img/icon72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="~/FEUser/img/icon76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="~/FEUser/img/icon114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="~/FEUser/img/icon120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="~/FEUser/img/icon144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="~/FEUser/img/icon152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="~/FEUser/img/icon180.png" sizes="180x180">
+    <!-- END Icons -->
+    <!-- Stylesheets -->
+    <!-- Bootstrap is included in its original form, unaltered -->
+    <link rel="stylesheet" href="~/FEUser/css/bootstrap.min.css">
+
+    <!-- Related styles of various icon packs and plugins -->
+    <link rel="stylesheet" href="~/FEUser/css/plugins.css">
+    <!-- The main stylesheet of this template. All Bootstrap overwrites are defined in here -->
+    <link rel="stylesheet" href="~/FEUser/css/main.css">
+
+    <!-- The themes stylesheet of this template (for using specific theme color in individual elements - must included last) -->
+    <link rel="stylesheet" href="~/FEUser/css/themes.css">
+
+    <link href="~/FEUser/css/bootstrap-social.css" rel="stylesheet" />
+
+    <!-- END Stylesheets -->
+    <!-- Modernizr (browser feature detection library) -->
+    <script src="~/FEUser/js/vendor/modernizr.min.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+    <!-- Page Container -->
+    <!-- In the PHP version you can set the following options from inc/config file -->
+    <!-- 'boxed' class for a boxed layout -->
+    <div id="page-container">
+        <!-- Site Header -->
+        <header>
+            <div class="container">
+                <!-- Site Logo -->
+                <a href="/Home/Index" class="site-logo">
+                    <i class="gi gi-book"></i> <strong>VAT</strong>Book
+                </a>
+                <!-- Site Logo -->
+                <!-- Site Navigation -->
+                <nav class="col-md-10">
+                    <!-- Menu Toggle -->
+                    <!-- Toggles menu on small screens -->
+                    <a href="javascript:void(0)" class="btn btn-default site-menu-toggle visible-xs visible-sm">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                    <!-- END Menu Toggle -->
+                    <!-- Main Menu -->
+                    <ul class="site-nav">
+                        <!-- Toggles menu on small screens -->
+                        <li class="visible-xs visible-sm">
+                            <a href="javascript:void(0)" class="site-menu-toggle text-center">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </li>
+                        <!-- END Menu Toggle -->
+                        <li>
+                            <a href="/Home/Index">Trang Chủ</a>
+                        </li>
+
+                        <li>
+                            <a href="/Home/Test">Danh Mục Sách</a>
+                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li>
+                                <a href="/Admin/Books/Index">Trang Admin</a>
+                            </li>
+                        }
+                        <li>
+                            <a href="/Home/Contact">Liên Hệ</a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>
+                                <a href="/GioHang/History?username=@User.Identity.Name" class="site-nav-sub"><i class="fa fa-angle-down site-nav-arrow"></i>Lịch sử</a>
+                                <ul>
+                                    @Html.Action("HistoryPartial", "GioHang", new { username = User.Identity.Name });
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="site-nav navbar-right">
+                        <li class="visible-xs visible-sm">
+                            <a href="javascript:void(0)" class="site-menu-toggle text-center">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </li>
+                        @Html.Partial("_LoginPartial")
+                    </ul>
+
+                    <!-- END Main Menu -->
+                </nav>
+                <!-- END Site Navigation -->
+            </div>
+        </header>
+        <!-- END Site Header -->
+        <!-- Intro -->
+        <!-- END Intro -->
+        <!-- Log In -->
+        @RenderBody()
+        <!-- END Log In -->
+        <!-- Support Links -->
+        <!-- END Support Links -->
+        <!-- Footer -->
+        <footer class="site-footer site-section">
+            <div class="container">
+                <!-- Footer Links -->
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <h4 class="footer-heading">About Us</h4>
+                        <ul class="footer-nav list-inline">
+                            <li><a href="/Home/About">Company</a></li>
+                            <li><a href="/Home/Contact">Contact</a></li>
+                            <li><a href="/Home/Contact">Support</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <h4 class="footer-heading">Legal</h4>
+                        <ul class="footer-nav list-inline">
+                            <li><a href="javascript:void(0)">Licensing</a></li>
+                            <li><a href="javascript:void(0)">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <h4 class="footer-heading">Follow Us</h4>
+                        <ul class="footer-nav footer-nav-social list-inline">
+                            <li><a href="https://www.facebook.com/vinh.dang.31149"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="https://twitter.com/PhmNgcChuMinhA1"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="javascript:void(0)"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="javascript:void(0)"><i class="fa fa-dribbble"></i></a></li>
+                            <li><a href="javascript:void(0)"><i class="fa fa-rss"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <h4 class="footer-heading"><span id="year-copy">2019</span> &copy; <a href="javascript:void(0)">VAT Book</a></h4>
+                        <ul class="footer-nav list-inline">
+                            <li>Crafted with <i class="fa fa-heart text-danger"></i> by <a href="javascript:void(0)">VAT</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- END Footer Links -->
+            </div>
+        </footer>
+        <!-- END Footer -->
+    </div>
+    <!-- END Page Container -->
+    <!-- Scroll to top link, initialized in ~/FEUser/js/app.js - scrollToTop() -->
+    <a href="#" id="to-top"><i class="fa fa-angle-up"></i></a>
+
+    <!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+    <script src="~/FEUser/js/vendor/jquery.min.js"></script>
+    <script src="~/FEUser/js/vendor/bootstrap.min.js"></script>
+    <script src="~/FEUser/js/plugins.js"></script>
+    <script src="~/FEUser/js/app.js"></script>
+    <script src="~/FEUser/js/jquery.unobtrusive-ajax.min.js"></script>
+    <!-- Load and execute javascript code used only in this page -->
+    <script src="~/FEUser/js/pages/login.js"></script>
+    <script>$(function () { Login.init(); });</script>
+    <script src="~/FEUser/js/pages/signup.js"></script>
+    <script>$(function () { Signup.init(); });</script>
+    <script src="~/FEUser/js/pages/ecomCheckout.js"></script>
+    <script>$(function () { EcomCheckout.init(); });</script>
+    <script src="~/js/pages/icons.js"></script>
+    <script>$(function () { Icons.init(); });</script>
+    <!-- Load and execute javascript code used only in this page -->
+    <script src="~/FEUser/js/pages/contact.js"></script>
+    <script>$(function () { Contact.init(); });</script>
+    <script src="~/js/pages/compAnimations.js"></script>
+    <script>$(function () { CompAnimations.init(); });</script>
+    <script src="~/FEUser/js/pages/jquery.mask.js"></script>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $("#img").attr("src", e.target.result);
+                };
+                document.getElementById("checkChange").value = "YES";
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#val_img").change(function () {
+            readURL(this);
+        });
+        $('#masked-card').mask('9999-9999-9999-9999');
+        $('#masked-cardnum').mask('9999-9999-9999');
+        $('#masked-serial').mask('9999-9999-9999');
+
+        $('#cvccart').mask('999');
+        $('#history').hover(function () {
+            document.getElementById('historyre').style.display = "block";
+        });
+        $('#history').mouseleave(function () {
+            document.getElementById('historyre').style.display = "none";
+        });
+    </script>
+    <script src="~/Scripts/jquery.signalR-2.4.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+</body>
+</html>

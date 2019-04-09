@@ -1,0 +1,86 @@
+﻿@model BookManagementPresentation.Model.Payment
+
+@{
+    ViewBag.Title = "Thêm Thanh Toán";
+}
+<div id="page-content">
+    <!-- Validation Header -->
+    <div class="content-header">
+        <ul class="nav-horizontal text-center">
+            <li>
+                <a href="/Admin/Books"><i class="gi gi-book"></i>Quản lí Sách</a>
+            </li>
+            <li>
+                <a href="/Admin/Categories"><i class="gi gi-shop_window"></i>Quản lí hiệu sách</a>
+            </li>
+            <li>
+                <a href="/Admin/Payments"><i class="gi gi-money"></i>Quản lí thanh toán</a>
+            </li>
+            <li>
+                <a href="/Admin/QuanLyDonHang"><i class="gi gi-shopping_cart"></i>Quản lí đơn hàng</a>
+            </li>
+            <li>
+                <a href="/Admin/Authors"><i class="gi gi-user"></i>Quản lí tác giả</a>
+            </li>
+            <li>
+                <a href="/Admin/Messages"><i class="gi gi-message_ban"></i>Tin nhắn</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row text-center">
+        <div class="col-sm-6 col-lg-3">
+            <a href="/Admin/Payments/Index" class="widget widget-hover-effect2">
+                <div class="widget-extra themed-background-success">
+                    <h4 class="widget-content-light"><strong>Quay về trang phương thức</strong></h4>
+                </div>
+                <div class="widget-extra-full"><span class="h2 text-success animation-expandOpen"><i class="gi gi-unshare"></i></span></div>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <a href="/Home/Index" class="widget widget-hover-effect2">
+                <div class="widget-extra themed-background-dark">
+                    <h4 class="widget-content-light"><strong>Đi đến cửa hàng</strong></h4>
+                </div>
+                <div class="widget-extra-full"><span class="h2 themed-color-dark animation-expandOpen">Go</span></div>
+            </a>
+        </div>
+    </div>
+    <!-- END Validation Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Form Validation Example Block -->
+            <div class="block">
+                <!-- Form Validation Example Title -->
+                <div class="block-title">
+                    <h2><strong>Categories</strong> Create</h2>
+                </div>
+                <!-- END Form Validation Example Title -->
+                <!-- Form Validation Example Content -->
+                <form id="form-validation" action="/Admin/Payments/Create" method="post" class="form-horizontal form-bordered" enctype="multipart/form-data">
+                    <div class="col-md-8 col-md-offset-2">
+                        <fieldset>
+                            <label class="col-md-12" for="val_img">Payment Name <span class="text-danger">*</span></label>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input type="text" name="Name" id="val_name" class="form-control" />
+                                        <span class="input-group-addon"><i class="fa fa-credit-card-alt"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="form-group form-actions">
+                        <div class="col-md-10 col-md-offset-5">
+                            <button type="submit" class="btn btn-sm btn-primary" id="btn-create"><i class="fa fa-arrow-right"></i>Insert Category</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- END Form Validation Example Content -->
+                <!-- Terms Modal -->
+            </div>
+            <!-- END Validation Block -->
+        </div>
+    </div>
+</div>

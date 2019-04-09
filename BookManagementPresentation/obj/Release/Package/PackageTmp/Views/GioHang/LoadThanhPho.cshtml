@@ -1,0 +1,17 @@
+﻿@using BookManagementPresentation.Model
+@model IEnumerable<City>
+
+    <select class="form-control" name="City" id="checkcity" onchange="check()">
+        <option disabled selected>Thành Phố</option>
+        @if (Model == null)
+        {
+
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        }
+    </select>

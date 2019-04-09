@@ -1,0 +1,28 @@
+﻿@using BookManagementPresentation.Model
+@model IEnumerable<Book>
+
+<div class="sidebar-block">
+    <ul class="store-menu">
+        @foreach (var CategoryGroup in Model.GroupBy(category => category.Category))
+        {
+            <li id="DanhMucSach">
+
+                <a href="@Url.Action("LoadSachTheoDanhMuc","Home",new {CageID=CategoryGroup.Key.ID})" class="submenu"><i class="fa fa-angle-right"></i> @CategoryGroup.Key.Name</a>
+                <ul id="TacGia">
+                    @foreach (var AuthorGroup in CategoryGroup.GroupBy(author => author.Author))
+                    {
+                        <li><a href="@Url.Action("LoadSachTheoDanhMucVaTacGia","Home",new {CageID=CategoryGroup.Key.ID, AuthorID=AuthorGroup.Key.ID })">@AuthorGroup.Key.Name</a></li>
+                    }
+
+                </ul>
+            </li>
+        }
+
+    </ul>
+</div>
+<style>
+
+    #DanhMucSach:hover #TacGia {
+        display: block;
+    }
+</style>

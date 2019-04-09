@@ -1,0 +1,72 @@
+﻿@using BookManagementPresentation.Model
+@using PagedList.Mvc;
+@*Class giúp hiển thị sản phẩm tương ứng với số trang*@
+@model PagedList.IPagedList<Book>
+@{
+    var sort = ViewBag.sort;
+}
+<div class="form-inline push-bit clearfix">
+    <select id="results-sort" name="results-sort" class="form-control" size="1" onchange="location = this.value;">
+        <option value="0" disabled selected>SẮP XẾP</option>
+        <option value="/Home/LoadSachTheoDanhMuc?CageID=@ViewBag.CageID&selectedValue=1">Ngày Phát Hành</option>
+        <option value="/Home/LoadSachTheoDanhMuc?CageID=@ViewBag.CageID&selectedValue=2">Tên (A to Z)</option>
+        <option value="/Home/LoadSachTheoDanhMuc?CageID=@ViewBag.CageID&selectedValue=3">Tên (Z to A)</option>
+        <option value="/Home/LoadSachTheoDanhMuc?CageID=@ViewBag.CageID&selectedValue=4">Giá (Tăng dần)</option>
+        <option value="/Home/LoadSachTheoDanhMuc?CageID=@ViewBag.CageID&selectedValue=5">Giá (Giảm dần)</option>
+    </select>
+</div>
+<div class="row store-items">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3 visibility" data-toggle="animation-appear" data-animation-class="animation-fadeInQuick" data-element-offset="-100">
+            <div class="store-item">
+                <div class="store-item-rating text-warning">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </div>
+                <div class="store-item-image">
+                    <a href="@Url.Action("XemChiTietSach","Home",new {BookID=item.ID})">
+                        <img src="@Url.Content("~/"+item.Image)" alt="not found" class="img-responsive" style="width:400px; height:300px;">
+                    </a>
+                </div>
+                <div class="store-item-info clearfix">
+                    <span class="store-item-price themed-color-dark pull-left" style="font-size:30px;">@item.Price.ToString("#,##") VNĐ</span>
+                    @if (item.Name.Length > 15)
+                    {
+                        <a href="@Url.Action("XemChiTietSach","Home",new {BookID=item.ID})" title="@item.Name">
+                            <strong>@item.Name.Substring(0, 12)</strong>...
+                        </a><br>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("XemChiTietSach","Home",new {BookID=item.ID})" title="@item.Name">
+                            <strong>@item.Name</strong>
+                        </a><br>
+                    }
+
+                    @*Nút thêm vào giỏ hàng; request.url: lấy đường dẫn hiện tại*@
+                    @*@if (User.Identity.IsAuthenticated)
+                    {*@
+                        <small><i class="fa fa-shopping-cart text-muted"></i>  @Ajax.ActionLink("Thêm vào giỏ hàng", "ThemGioHangAjax", "GioHang", new { @_BookID = item.ID, @urlPath = Request.Url.ToString() }, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "divGioHang", InsertionMode = InsertionMode.Replace }, new { @class = "text-muted" })</small>
+                    @*}
+                    else
+                    {
+                        <small><i class="fa fa-shopping-cart text-muted"></i>@Html.ActionLink("Thêm vào giỏ hàng", "Login", "Account", new { @returnUrl = "/Home/Test", }, new { @class = "text-muted" })</small>
+                    }*@
+                </div>
+
+            </div>
+        </div>
+    }
+    <div class="dlink col-lg-12" style="margin-right:0;">
+        Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+        @*PagedListPager:Tách sản phẩm thành nhiều trang
+            Model: list sách mỗi trang(4)
+            page: trỏ tới link ở trang kế tiếp
+        *@
+        @Html.PagedListPager(Model, pageID => Url.Action("LoadSachTheoDanhMuc", "Home", new { Page = pageID, @CageID = ViewBag.CageID, selectedValue = sort }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions { MaximumPageNumbersToDisplay = 5 },new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "DanhMuc", InsertionMode = InsertionMode.Replace }))
+    </div>
+</div>

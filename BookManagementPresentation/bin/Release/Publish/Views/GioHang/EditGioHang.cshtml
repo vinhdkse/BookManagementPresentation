@@ -1,0 +1,112 @@
+﻿@using BookManagementPresentation.Models
+@model ItemGioHang
+@{
+    ViewBag.Title = "EditGioHang";
+}
+@{
+    List<ItemGioHang> GioHang = ViewBag.GioHang as List<ItemGioHang>;
+}
+<section class="site-section site-section-light site-section-top themed-background-dark">
+    <div class="container text-center">
+        <h1 class="animation-slideDown"><i class="fa fa-shopping-cart"></i> <strong>Shopping Cart</strong></h1>
+    </div>
+</section>
+<section class="site-content site-section">
+    <div class="container">
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-vcenter">
+                <thead>
+                    <tr>
+                        <th colspan="2">Sách</th>
+                        <th class="text-center">Số Lượng</th>
+                        <th class="text-right">Đơn Giá</th>
+                        <th class="text-right">Thành Tiền</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in GioHang)
+                    {
+                        @*Sách có mã sách đc chỉnh sửa từ tham số bên trang xem giỏ hàng*@
+                        if (Model.BookID == item.BookID)
+                        {
+                            using (Html.BeginForm("CapNhatGioHang", "GioHang"))
+                            {
+                                <tr>
+                                    <td style="width: 200px;">
+                                        <img src="@Url.Content("~/" + item.Image)" alt="" style="width: 180px;">
+                                    </td>
+                                    <td>
+                                        <strong>@item.BookName @Html.Hidden("BookID", item.BookID)</strong><br>
+                                        Super Laptop 11'<br>
+                                        <strong class="text-success">In stock</strong> - 24h Delivery
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.TextBox("Quantity", item.Quantity, new { @class = "ChangedQuantity" }) @item.Quantity
+                                        <p id="TB_changedQuantity"></p>
+                                       </td>
+                                    <td class="text-right">@item.Price.ToString("#,##") VNĐ</td>
+                                    <td class="text-right"><strong>@item.TotalPrice.ToString("#,##") VNĐ</strong></td>
+                                    <td>
+                                        <input type="submit" value="Cập Nhật" id="btnCapNhatGH" class="btn btn-success"/>
+                                        @Html.ActionLink("Xóa", "XoaItemGioHang", new { @_BookID = item.BookID }, new { @class = "btn btn-xs btn-danger" })
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td style="width: 200px;">
+                                    <img src="@Url.Content("~/" + item.Image)" alt="" style="width: 180px;">
+                                </td>
+                                <td>
+                                    <strong>@item.BookName</strong><br>
+                                    Super Laptop 11'<br>
+                                    <strong class="text-success">In stock</strong> - 24h Delivery
+                                </td>
+                                <td class="text-center">
+                                    <strong>@item.Quantity</strong>
+                                    <a href="javascript:void(0)" class="btn btn-xs btn-success" data-toggle="tooltip" title="Add"><i class="fa fa-plus"></i></a>
+                                    <a href="javascript:void(0)" class="btn btn-xs btn-danger" data-toggle="tooltip" title="Remove"><i class="fa fa-minus"></i></a>
+                                </td>
+                                <td class="text-right">@item.Price.ToString("#,##") VNĐ</td>
+                                <td class="text-right"><strong> @item.TotalPrice.ToString("#,##")VNĐ</strong></td>
+                                <td>
+                                    @Html.ActionLink("Sửa", "EditGioHang", new { @_BookID = item.BookID }, new { @class = "btn btn-xs btn-success" })
+                                    @Html.ActionLink("Xóa", "XoaItemGioHang", new { @_BookID = item.BookID }, new { @class = "btn btn-xs btn-danger" })
+                                </td>
+                            </tr>
+
+                        }
+
+                    }
+
+                    <tr class="active">
+                        <td colspan="4" class="text-right text-uppercase h4"><strong>Tổng tiền</strong></td>
+                        <td class="text-right text-success h4"><strong>@ViewBag.TongTien.ToString("#,##") VNĐ</strong></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-xs-7 col-md-3">
+                <a href="/Home/Test" class="btn btn-block btn-primary">Tiếp tục mua hàng</a>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+@Html.Action("BestSeller","GioHang")
+
+@*kiểm tra số lượng edit không hợp lệ: không phải số hoặc nhỏ hơn 0*@
+<script>$("#btnCapNhatGH").click(function () {
+        var quantity = $(".ChangedQuantity").val();
+        if (isNaN(quantity) == true || quantity < 0) {
+            $("#TB_changedQuantity").text("Số lượng không hợp lệ!");
+            return false;
+        }
+    });</script>

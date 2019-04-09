@@ -1,0 +1,104 @@
+﻿@using BookManagementPresentation.Model
+@model Book
+@{
+    ViewBag.Title = "Xem Chi Tiết Sách";
+    var list = (IList<Comment>)ViewData["ListComment"];
+}
+<section class="site-section site-section-light site-section-top themed-background-dark">
+    <div class="container text-center">
+        <h1 class="animation-slideDown"><strong>Hơn 5000 Quyển Sách!</strong></h1>
+    </div>
+</section>
+<!-- END Intro -->
+<!-- Product List -->
+<section class="site-content site-section">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-4 col-lg-3">
+                <aside class="sidebar site-block">
+                    <!-- Store Menu -->
+                    <!-- Store Menu functionality is initialized in js/app.js -->
+                    @Html.Action("LoadDanhMucSach", "Home")
+                    <!-- Shopping Cart -->
+                    @Html.Action("GioHangPartial", "GioHang")
+                    <!-- END Shopping Cart -->
+                </aside>
+            </div>
+            <!-- END Sidebar -->
+            <!-- Products -->
+            <div class="col-md-8 col-lg-9">
+                <div class="form-inline push-bit clearfix">
+
+                </div>
+                <div class="col-md-8 col-lg-9">
+                    <div class="row" data-toggle="lightbox-gallery">
+                        <!-- Images -->
+                        <div class="col-sm-6 push-bit">
+                            <a href="@Url.Content("~/" + Model.Image)" class="gallery-link"><img src="@Url.Content("~/" + Model.Image)" alt="" class="img-responsive push-bit animation-fadeIn"></a>
+
+                        </div>
+                        <!-- END Images -->
+                        <!-- Info -->
+                        <div class="col-sm-6 push-bit">
+                            <div class="clearfix">
+                                <div class="pull-right">
+                                    <span class="h2"><strong>@Model.Price.ToString("#,##") VNĐ</strong></span>
+                                </div>
+                                <span class="h4"><strong class="text-success">@Model.Name</strong><br><br /><br /><small>Có sẵn @Model.Quantity cuốn sách</small></span>
+                            </div>
+                            <hr>
+                            <p>Tác Giả: @ViewBag.AuthorName</p>
+                            <p>Nhà Xuất Bản: @Model.Publisher</p>
+                            <p>Ngày Phát Hành: @Model.PublishDate</p>
+
+
+                            <hr>
+                            @*@if (User.Identity.IsAuthenticated)
+                            {*@
+                                @Ajax.ActionLink("Thêm vào giỏ hàng", "ThemGioHangAjax", "GioHang", new { @_BookID = Model.ID, @urlPath = Request.Url.ToString() }, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "divGioHang", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
+                            @*}
+                            else
+                            {
+                                @Html.ActionLink("Thêm vào giỏ hàng", "Login", "Account", new { @returnUrl = "/Home/Test" }, new { @class = "btn btn-success" })
+                            }*@
+
+                        </div>
+                        <!-- END Info -->
+                        <!-- More Info Tabs -->
+                        <div class="col-xs-12 site-block">
+                            <ul class="nav nav-tabs push-bit" data-toggle="tabs">
+                                <li id="des"><a href="#product-description" onclick="Des()">Description</a></li>
+                                <li id="rev" class="active"><a href="#product-reviews" onclick="Rev()">Reviews</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="product-description">
+                                    <p>@Model.Description</p>
+                                </div>
+                                <div class="tab-pane active" id="product-reviews">
+                                    @Html.Action("Comment", "Home", new { BookID = Model.ID })
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END More Info Tabs -->
+                    </div>
+                </div>
+            </div>
+            <!-- END Products -->
+        </div>
+    </div>
+</section>
+<script>
+    function Des() {
+        document.getElementById('des').className = 'active';
+        document.getElementById('rev').className = '';
+        document.getElementById('product-description').className = 'tab-pane active';
+        document.getElementById('product-reviews').className = 'tab-pane';
+    }
+    function Rev() {
+        document.getElementById('des').className = '';
+        document.getElementById('rev').className = 'active';
+        document.getElementById('product-description').className = 'tab-pane';
+        document.getElementById('product-reviews').className = 'tab-pane active';
+    }
+</script>

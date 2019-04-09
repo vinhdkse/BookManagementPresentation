@@ -1,0 +1,66 @@
+﻿@using BookManagementPresentation.Model
+@model DonDatHang
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <table id="table">
+
+        <thead>
+            <tr>
+                <td colspan="5">
+                    <table style="width:100%;">
+                        <tr>
+                            <td>Mã đơn hàng: <b style="color:red;">{{MaDonHang}}</b></td>
+                            <td>Mã khách hàng: <b style="color:red;"> {{MaKhachHang}}</b></td>
+                            <td>Tên khách hàng: <b style="color:red;"> {{TenKhachHang}}</b></td>
+                            <td>Ngày đặt: {{NgayDat}}</td>
+                            <td>Đã thanh toán: {{DaThanhToan}}</td>
+                            <td>Đã giao: {{DaGiao}}</td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+        </thead>
+        <thead>
+            <tr>
+
+                <th class="text-center">Sản Phẩm</th>
+                <th class="text-center">Hình Ảnh</th>
+                <th class="text-center">Số Lượng Đặt</th>
+                <th class="text-center">Đơn Giá</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @for (int i = 0; i < 3; i++)
+
+            {
+                <tr>
+                    <td class="text-center">{{ TenSach }}</td>
+                    <td class="text-center"><img src="{{HinhAnh}}" width="100" height="150" alt="avatar" class="img-rounded" /></td>
+                    <td class="text-center">{{ SoLuong }}</td>
+                    <td class="text-center">{{ DonGia }}</td>
+                </tr>
+            }
+
+
+            <tr>
+                <td align="right" colspan="5">Tổng số lượng: {{TongSoLuong}} cuốn sách</td>
+            </tr>
+            <tr>
+                <td align="right" colspan="5">Tổng tiền: {{TongTien}} nghìn đồng</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

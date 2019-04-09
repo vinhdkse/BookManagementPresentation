@@ -1,0 +1,97 @@
+﻿@using BookManagementPresentation.Model
+@model IEnumerable<Book>
+@{
+    ViewBag.Title = "FindBookByLikeName";
+}
+
+<!-- ajax -->
+<section class="site-section site-section-light site-section-tsop themed-background-dark">
+    <div class="container text-center">
+        <h1 class="animation-slideDown"><strong>Explore over 5.000 products!</strong></h1>
+    </div>
+</section>
+<!-- END Intro -->
+<!-- Product List -->
+<section class="site-content site-section">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-4 col-lg-3">
+                <aside class="sidebar site-block">
+                    <!-- Store Menu -->
+                    <!-- Store Menu functionality is initialized in js/app.js -->
+                    @Html.Action("LoadDanhMucSach", "Home")
+                    <!-- Shopping Cart -->
+                    @Html.Action("GioHangPartial", "GioHang")
+                    <!-- END Shopping Cart -->
+                </aside>
+            </div>
+            <!-- END Sidebar -->
+            <!-- Products -->
+            <div class="col-md-8 col-lg-9">
+                <div class="form-inline push-bit clearfix">
+                    <select id="results-sort" name="results-sort" class="form-control" size="1">
+                        <option value="0" disabled selected>SORT BY</option>
+                        <option value="1">Popularity</option>
+                        <option value="2">Name (A to Z)</option>
+                        <option value="3">Name (Z to A)</option>
+                        <option value="4">Price (Lowest to Highest)</option>
+                        <option value="5">Price (Highest to Lowest)</option>
+                    </select>
+                </div>
+
+                <div class="row store-items">
+                    @if (Model != null)
+                    {
+                        <h3>Kết quả tìm kiếm cho từ khóa '@ViewBag.TuKhoa'</h3>
+                        foreach (var item in Model)
+                        {
+                            <div class="col-md-6 visibility" data-toggle="animation-appear" data-animation-class="animation-fadeInQuick" data-element-offset="-100">
+                                <div class="store-item">
+                                    <div class="store-item-rating text-warning">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-half-o"></i>
+                                    </div>
+                                    <div class="store-item-image">
+                                        <a href="@Url.Action("XemChiTietSach", "Home", new { BookID = item.ID })">
+                                            <img src="@Url.Content("~/" + item.Image)" alt="not found" class="img-responsive" style="width:400px; height:300px;">
+                                        </a>
+                                    </div>
+                                    <div class="store-item-info clearfix">
+                                        <span class="store-item-price themed-color-dark pull-right">@item.Price.ToString("#,##") VNĐ</span>
+                                        @if (item.Name.Length > 25)
+                                        {
+                                            <a href="@Url.Action("XemChiTietSach", "Home", new { BookID = item.ID })" title="@item.Name">
+                                                <strong>@item.Name.Substring(0, 23)</strong>...
+                                            </a><br>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("XemChiTietSach", "Home", new { BookID = item.ID })" title="@item.Name">
+                                                <strong>@item.Name</strong>
+                                            </a><br>
+                                        }
+
+                                        @*Nút thêm vào giỏ hàng; request.url: lấy đường dẫn hiện tại*@
+                                        <small><i class="fa fa-shopping-cart text-muted"></i>  @Ajax.ActionLink("Thêm vào giỏ hàng", "ThemGioHangAjax", "GioHang", new { @_BookID = item.ID, @urlPath = Request.Url.ToString() }, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "divGioHang", InsertionMode = InsertionMode.Replace }, new { @class = "text-muted" })</small>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <h3>Chúng tôi không tìm thấy sách '@ViewBag.TuKhoa' nào!</h3>
+                    }
+                </div>
+
+            </div>
+            <!-- END Products -->
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,23 @@
+﻿@using BookManagementPresentation.Model
+@model IList<DonDatHang>
+@if (Model.Count == 0)
+{
+    <li><strong class="text-danger">Bạn chưa có lịch sử mua hàng nảo</strong></li>
+}
+else if (Model.Count > 3)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        var item = Model.ElementAt(i);
+        <li><a  href="/GioHang/LichSu?id=@item.DDH_ID">Đơn số @item.DDH_ID</a></li>
+    }
+    <li><a  href="/GioHang/History?username=@User.Identity.Name">Xem thêm</a></li>
+
+}
+else
+{
+    foreach (var item in Model)
+    {
+        <li><a href="/GioHang/LichSu?id=@item.DDH_ID">Đơn số @item.DDH_ID</a></li>
+    }
+}
